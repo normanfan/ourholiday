@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>
+      {% block title %}My Site{% endblock %}
+    </title>
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    <div>
+      hello
+    </div>
+    {% block content %}{% endblock %}
+    {% block scripts %}
+      <script type="text/javascript" src='3th-part\vue.js'></script>
+    {% endblock %}
+  </body>
+</html>
