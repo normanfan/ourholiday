@@ -1,0 +1,3 @@
+var ImgSlider = Vue.extend({
+
+})
