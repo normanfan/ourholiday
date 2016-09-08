@@ -18,15 +18,33 @@ gulp.task('templates', function() {
 //vue
 gulp.task("webpack", function() {
   return gulp.src('js/**/*.js')
-     .pipe(webpack({
-       entry: {
-         'home/test': './js/common/index.js'
-       },
-       output: {
-         filename: '[name].js',
-       },
-     }))
-     .pipe(gulp.dest('dist/'));
+    .pipe(webpack({
+      devtool: 'source-map',
+      entry: {
+        'common/layout': './js/index.js'
+      },
+      output: {
+        filename: '[name].js',
+      },
+      module: {
+        loaders: [{
+          test: /\.js$/,
+          exclude: /(node_modules|bower_components)/,
+          loader: 'babel',
+          query: {
+            presets: ['es2015']
+          }
+        }, {
+          test: /\.(jpe?g|png|gif|svg)$/i,
+          loader: 'url?limit=10000!img?progressive=true'
+        }, {
+          test: /\.vue$/,
+          exclude: /(node_modules|bower_components)/,
+          loader: 'vue'
+        }]
+      }
+    }))
+    .pipe(gulp.dest('public/js'));
 });
 
 // 编译sass
@@ -45,7 +63,8 @@ gulp.task('sass:w', function() {
 })
 
 gulp.task('webpack:w', function() {
-  gulp.watch("js/**/*.js", ['webpack'])
+  gulp.watch("js/**/*.js", ['webpack']);
+  gulp.watch("vue/**/*.vue", ['webpack']);
 })
 
 gulp.task('template:w', function() {

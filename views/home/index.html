@@ -4,31 +4,24 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <link rel="icon" href="imgs/favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="/stylesheets/layout.css" media="screen" title="no title">
   <title>our holiday</title>
 </head>
 
 <body>
-  <header id="header">
-    <my-layout>
-    </my-layout>
-  </header>
-  <div class="content">
-    <div class="vh-wrap">
-      <div class="vh-top">
-        <div class="left-img">
-
-        </div>
-        <div class="left-menu"></div>
-      </div>
+  <div id="container">
+    <header id="header">
+      <my-layout>
+      </my-layout>
+    </header>
+    <div class="content">
+      <img-slider></img-slider>
     </div>
   </div>
-
-
-  <% include ../components/common/layout.html %>
-    <script type="text/javascript" src='3th-part\vue.js'></script>
-    <script type="text/javascript" src='3th-part\jquery-1.10.2.min.js'></script>
-    <script type="text/javascript" src='js\layout.js'></script>
+  <script type="text/javascript" src='3th-part/vue.js'></script>
+  <script type="text/javascript" src='3th-part/jquery-1.10.2.min.js'></script>
+  <script type="text/javascript" src='js/common/layout.js'></script>
 </body>
 
 </html>

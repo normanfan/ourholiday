@@ -1,39 +1,27 @@
 * {
+  font-family: cursive;
   box-sizing: border-box;
   margin: 0;
-  padding: 0; }
+  padding: 0;
+  white-space: nowrap; }
 
-body {
+body,
+html {
   background-color: #f1f2f3; }
 
-.nav-panel {
-  font-size: 14px;
-  position: fixed;
-  z-index: 998;
-  top: 0;
-  width: 100%;
-  height: 80px;
-  background-color: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); }
-  .nav-panel .nav-header {
-    width: 1000px;
-    margin: 0 auto; }
-    .nav-panel .nav-header .vh-logo-img {
-      float: left;
-      width: 169px;
-      height: 80px;
-      transition: all;
-      text-indent: -9999px;
-      background: url(../imgs/logo_holiday.png) 0 12px no-repeat; }
-      .nav-panel .nav-header .vh-logo-img:active {
-        background-position: 0 13px; }
-    .nav-panel .nav-header .wh-menu {
-      line-height: 26px;
-      float: left;
-      height: 26px;
-      margin-top: 27px;
-      margin-left: 50px;
-      cursor: pointer; }
+li {
+  list-style: none; }
 
-.vh-content {
-  padding-top: 80px; }
+.left {
+  float: left; }
+
+.right {
+  float: right; }
+
+#header {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  background-color: #fff; }
+
+.content {
+  width: 1000px;
+  margin: 20px auto; }
