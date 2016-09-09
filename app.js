@@ -41,6 +41,10 @@ app.get('/home', function(req, res) {
   res.render('home/index');
 })
 
+app.get('/view/demo', function(req, res) {
+  res.render('demo/index');
+})
+
 //数据api
 app.get('/sendmessage', function(req, res) {
 

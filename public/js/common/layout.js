@@ -118,7 +118,7 @@
 	
 	
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\n/* 必需 */\n.expand-transition {\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease;\n  height: auto;\n  padding: 10px;\n  background-color: #eee;\n  overflow: hidden; }\n\n/* .expand-enter 定义进入的开始状态 */\n/* .expand-leave 定义离开的结束状态 */\n.expand-enter,\n.expand-leave {\n  height: 0;\n  padding: 0 10px;\n  opacity: 0; }\n\n.nav-header {\n  width: 1000px;\n  margin: 0 auto;\n  height: 70px;\n  white-space: nowrap;\n  font-size: 0; }\n  .nav-header .logo {\n    display: inline-block; }\n    .nav-header .logo img {\n      height: 70px; }\n  .nav-header .nav-header-right {\n    padding-top: 30px;\n    padding-left: 50px;\n    vertical-align: top;\n    height: 100%;\n    width: calc(100% - 75px);\n    font-size: 14px;\n    display: inline-block; }\n    .nav-header .nav-header-right .menu > div {\n      margin-right: 20px;\n      cursor: pointer;\n      position: relative; }\n    .nav-header .nav-header-right .menu .menu-panel .menu-dropdown {\n      position: absolute;\n      z-index: 100; }\n    .nav-header .nav-header-right .menu .menu-panel:focus {\n      outline: 0; }\n    .nav-header .nav-header-right .menu .menu-panel li {\n      height: 20px;\n      line-height: 20px; }\n    .nav-header .nav-header-right .search {\n      margin-right: 10px; }\n      .nav-header .nav-header-right .search input {\n        padding: 0 5px; }\n", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\n/* 必需 */\n.expand-transition {\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease;\n  height: auto;\n  padding: 10px;\n  background-color: #eee;\n  overflow: hidden; }\n\n/* .expand-enter 定义进入的开始状态 */\n/* .expand-leave 定义离开的结束状态 */\n.expand-enter,\n.expand-leave {\n  height: 0;\n  padding: 0 10px;\n  opacity: 0; }\n\n.nav-header {\n  width: 100%;\n  max-width: 1000px;\n  margin: 0 auto;\n  height: 70px;\n  white-space: nowrap;\n  font-size: 0; }\n  .nav-header .logo {\n    display: inline-block; }\n    .nav-header .logo img {\n      height: 70px; }\n  .nav-header .nav-header-right {\n    padding-top: 30px;\n    padding-left: 50px;\n    vertical-align: top;\n    height: 100%;\n    width: calc(100% - 75px);\n    font-size: 14px;\n    display: inline-block; }\n    .nav-header .nav-header-right .menu > div {\n      margin-right: 20px;\n      cursor: pointer;\n      position: relative; }\n    .nav-header .nav-header-right .menu .menu-panel .menu-dropdown {\n      position: absolute;\n      z-index: 100; }\n    .nav-header .nav-header-right .menu .menu-panel:focus {\n      outline: 0; }\n    .nav-header .nav-header-right .menu .menu-panel li {\n      height: 20px;\n      line-height: 20px; }\n    .nav-header .nav-header-right .search {\n      margin-right: 10px; }\n      .nav-header .nav-header-right .search input {\n        padding: 0 5px; }\n", ""]);
 	
 	// exports
 
@@ -423,7 +423,7 @@
 	
 	    methods: {
 	        "goHome": function goHome() {
-	            alert("go home");
+	            window.location.href = "/";
 	        },
 	        "showMenu": function showMenu() {
 	            this.isSHowMenu = !this.isSHowMenu;
@@ -435,6 +435,9 @@
 	        'viewMore': function viewMore() {
 	            this.isSHowMenu = false;
 	            alert('i will go to see menu');
+	        },
+	        'viewDemo': function viewDemo() {
+	            window.location.href = "/view/demo";
 	        }
 	    },
 	    components: {}
@@ -444,7 +447,7 @@
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<div class='nav-header'>\n    <div class=\"logo\">\n        <img src=\"" + __webpack_require__(8) + "\" alt=\"\" />\n    </div>\n    <div class=\"nav-header-right\">\n        <div class='menu left'>\n            <div class=\"left\" v-on:click=\"goHome\">主页</div>\n            <div class=\"left menu-panel\" v-on:click.stop=\"showMenu\" v-on:blur=\"hideMenu\" tabindex=\"1\">菜单\n                <div class=\"menu-dropdown\" transition=\"expand\" v-el:menu v-if=\"isSHowMenu\" v-on:click.stop>\n                    <ul>\n                        <li v-on:click.stop=\"viewMore\">查看详情</li>\n                        <li v-on:click.stop=\"viewMore\">hahah</li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n        <div class=\"header-right right\">\n            <div class=\"search left\">\n                <input type=\"text\" placeholder=\"so so\">\n                <i>搜索</i>\n            </div>\n            <div class=\"login right\">\n                <a href=\"#\">登录</a>\n                <a href=\"#\">注册</a>\n            </div>\n        </div>\n    </div>\n</div>\n\n";
+	module.exports = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<div class='nav-header'>\n    <div class=\"logo\">\n        <img src=\"" + __webpack_require__(8) + "\" alt=\"\" />\n    </div>\n    <div class=\"nav-header-right\">\n        <div class='menu left'>\n            <div class=\"left\" v-on:click=\"goHome\">主页</div>\n            <div class=\"left menu-panel\" v-on:click.stop=\"showMenu\" v-on:blur=\"hideMenu\" tabindex=\"1\">菜单\n                <div class=\"menu-dropdown\" transition=\"expand\" v-el:menu v-if=\"isSHowMenu\" v-on:click.stop>\n                    <ul>\n                        <li v-on:click.stop=\"viewMore\">查看详情</li>\n                        <li v-on:click.stop=\"viewDemo\">我的DEMO</li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n        <div class=\"header-right right\">\n            <!-- <div class=\"search left\">\n                <input type=\"text\" placeholder=\"so so\">\n                <i>搜索</i>\n            </div> -->\n            <div class=\"login right\">\n                <a href=\"#\">登录</a>\n                <a href=\"#\">注册</a>\n            </div>\n        </div>\n    </div>\n</div>\n\n";
 
 /***/ },
 /* 8 */

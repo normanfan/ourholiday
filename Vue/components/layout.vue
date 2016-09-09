@@ -24,7 +24,8 @@
 }
 
 .nav-header {
-    width: 1000px;
+    width: 100%;
+    max-width: 1000px;
     margin: 0 auto;
     height: 70px;
     white-space: nowrap;
@@ -87,16 +88,16 @@
                 <div class="menu-dropdown" transition="expand" v-el:menu v-if="isSHowMenu" v-on:click.stop>
                     <ul>
                         <li v-on:click.stop="viewMore">查看详情</li>
-                        <li v-on:click.stop="viewMore">hahah</li>
+                        <li v-on:click.stop="viewDemo">我的DEMO</li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="header-right right">
-            <div class="search left">
+            <!-- <div class="search left">
                 <input type="text" placeholder="so so">
                 <i>搜索</i>
-            </div>
+            </div> -->
             <div class="login right">
                 <a href="#">登录</a>
                 <a href="#">注册</a>
@@ -122,7 +123,7 @@ export default {
         },
         methods: {
             "goHome": function() {
-                alert("go home")
+                window.location.href = "/";
             },
             "showMenu": function() {
                 this.isSHowMenu = !this.isSHowMenu;
@@ -134,6 +135,9 @@ export default {
             'viewMore': function() {
                 this.isSHowMenu = false;
                 alert('i will go to see menu')
+            },
+            'viewDemo': function() {
+                window.location.href = "/view/demo";
             }
         },
         components: {}

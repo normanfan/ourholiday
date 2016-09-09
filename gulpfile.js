@@ -21,7 +21,8 @@ gulp.task("webpack", function() {
     .pipe(webpack({
       devtool: 'source-map',
       entry: {
-        'common/layout': './js/index.js'
+        'common/layout': './js/index.js',
+        'demo/index':'./js/demo/index.js'
       },
       output: {
         filename: '[name].js',

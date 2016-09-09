@@ -1,0 +1,52 @@
+
+.left-nav
+{
+    position: fixed;
+    top: 90px;
+
+    width: 150px;
+    min-height: 200px;
+
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .8);
+    ul
+    {
+        padding: 10px;
+    }
+    li
+    {
+        line-height: 30px;
+
+        height: 30px;
+
+        cursor: pointer;
+        user-select: none;
+        &:hover,
+        &:active
+        {
+            background-color: #f1f1f1;
+        }
+        &.selected
+        {
+            border-right: 4px solid rgb(26, 170, 226);
+        }
+    }
+}
+
+.main-content
+{
+    padding-left: 200px;
+}
+@media (max-width:430px)
+{
+    .left-nav
+    {
+        position: static;
+
+        float: left;
+    }
+    .main-content
+    {
+        padding-left: 0;
+    }
+}

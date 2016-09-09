@@ -1,0 +1,31 @@
+.left-nav {
+  position: fixed;
+  top: 90px;
+  width: 150px;
+  min-height: 200px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); }
+  .left-nav ul {
+    padding: 10px; }
+  .left-nav li {
+    line-height: 30px;
+    height: 30px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
+    .left-nav li:hover, .left-nav li:active {
+      background-color: #f1f1f1; }
+    .left-nav li.selected {
+      border-right: 4px solid #1aaae2; }
+
+.main-content {
+  padding-left: 200px; }
+
+@media (max-width: 430px) {
+  .left-nav {
+    position: static;
+    float: left; }
+  .main-content {
+    padding-left: 0; } }
