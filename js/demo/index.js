@@ -24,13 +24,28 @@ var vm = new Vue({
       components: 'grid',
       type: 2,
       data: {
-        selectYear: 2016,
-        selectMonth: 9,
-        selectDay: 1
+        options: {},
+        columns: [{
+          displayName:"aaa",
+          columnName:"Hello"
+        },{
+          displayName:"action",
+          columnName:"Action",
+          filter:function(){
+            return "Action"
+          }
+        }],
+        columnDatas:[{
+          Hello:"a",
+          ddd:'cc'
+        },
+        {
+          Hello:"b"
+        }]
       }
     }],
     childrenData: {},
-    selectMenuIndex: 0,
+    selectMenuIndex: 1,
   },
   computed: {
     currentView: function() {
