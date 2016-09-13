@@ -125,17 +125,17 @@ app.get('/holiday/getworkday', function(req, res) {
 app.post('/holiday/delete', function(req, res) {
   var dateList = JSON.parse(req.body.dateList),
     avObjectArray = [];
-  var cql = 'delete * from workDate where objectId in (' + dateList.join() + ')';
-  AV.Query.doCloudQuery('delete from workDate where objectId="57d7a79c128fe1005538883e"').then(function (data) {
-    res.json({
-      status:'success'
-    })
-   }, function (error) {
-     res.json({
-       status:'failed',
-       error
-     })
-   });
+  // var cql = 'delete * from workDate where objectId in (' + dateList.join() + ')';
+  // AV.Query.doCloudQuery('delete from workDate where objectId="57d7a79c128fe1005538883e"').then(function (data) {
+  //   res.json({
+  //     status:'success'
+  //   })
+  //  }, function (error) {
+  //    res.json({
+  //      status:'failed',
+  //      error
+  //    })
+  //  });
   // AV.Query.doCloudQuery(cql).then(function(data) {
   //   res.json({
   //     status: 'success'
@@ -147,24 +147,21 @@ app.post('/holiday/delete', function(req, res) {
   //   });
   // })
 
-  // dateList.forEach(elem => {
-  //   console.log(elem);
-  //   var workDate = new WorkDate();
-  //   var dateObj = AV.Object.createWithoutData('workDate', elem);
-  //   console.log(dateObj);
-  //   avObjectArray.push(dateObj);
-  // });
-  // console.log(avObjectArray);
-  // AV.Object.destroyAll(avObjectArray).then(function(avobjs) {
-  //   res.json({
-  //     status: 'success'
-  //   });
-  // }, function(error) {
-  //   res.json({
-  //     status: 'failed',
-  //     message:error,
-  //   });
-  // });
+  dateList.forEach(elem => {
+    var workDate = new WorkDate();
+    var dateObj = AV.Object.createWithoutData('workDate', elem);
+    avObjectArray.push(dateObj);
+  });
+  AV.Object.destroyAll(avObjectArray).then(function(avobjs) {
+    res.json({
+      status: 'success'
+    });
+  }, function(error) {
+    res.json({
+      status: 'failed',
+      message: error,
+    });
+  });
 
 });
 
