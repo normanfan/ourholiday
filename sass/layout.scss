@@ -1,44 +1,13 @@
-@font-face
-{
-    font-family: anana;
-    font-weight: 400;
-    font-style: normal;
+@import './common/core.scss';
 
-    src: url(../fonts/anana.eot);
-    src: url(../fonts/anana.eot) format('eot');
-    src: url(../fonts/anana.woff) format('woff');
-    src: url(../fonts/anana.ttf) format('truetype');
-}
-*
-{
-    font-family: 'Segoe UI';
-
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-
-    white-space: nowrap;
-}
 body,
 html
 {
     display: table;
 
-    width: 100%;
-    height: 100%;
+  
 }
-li
-{
-    list-style: none;
-}
-.left
-{
-    float: left;
-}
-.right
-{
-    float: right;
-}
+
 // #header
 // {
 //     position: fixed;
@@ -119,6 +88,7 @@ li
 
                 display: inline-block;
 
+                max-width: 100%;
                 margin-right: 3rem;
                 margin-bottom: 1.5rem;
                 padding: .75rem 1.5rem;
@@ -130,7 +100,9 @@ li
                 border-radius: 5px;
                 a
                 {
+                    white-space: normal;
                     text-decoration: none;
+                    word-wrap: break-word;
 
                     color: #fff;
                 }

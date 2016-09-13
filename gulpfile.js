@@ -22,7 +22,8 @@ gulp.task("webpack", function() {
       devtool: 'source-map',
       entry: {
         'common/layout': './js/index.js',
-        'demo/index':'./js/demo/index.js'
+        'demo/index':'./js/demo/index.js',
+        'holiday/index':'./js/holiday/index.js'
       },
       output: {
         filename: '[name].js',

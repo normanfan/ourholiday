@@ -34,12 +34,13 @@
             display: inline-block;
         }
     }
-      .content{
-        user-select:none;
-        cursor:pointer;
-      }
+    .content {
+        user-select: none;
+        cursor: pointer;
+    }
     .drop-down {
         position: absolute;
+        z-index: 2
     }
 }
 
@@ -78,9 +79,7 @@ export default {
             };
         },
         props: ['childrenData'],
-        computed: {
-
-        },
+        computed: {},
         ready() {},
         attached() {},
         methods: {
@@ -150,12 +149,20 @@ export default {
         },
         events: {
             'select-day': function(date) {
+                var oldView = this.currentView;
                 if (this.currentView == "year-picker") {
                     this.currentView = "month-picker"
                 } else if (this.currentView == "month-picker") {
                     this.currentView = "day-picker"
                 }
-                this.$dispatch('selectDate', date);
+                var callback = 'selectDate';
+                if (this.childrenData.callback) {
+                    callback = this.childrenData.callback;
+                }
+                this.$dispatch(callback, date, oldView);
+            },
+            'show-drop': function(isShow) {
+                this.isShow = isShow;
             }
         },
         components: {

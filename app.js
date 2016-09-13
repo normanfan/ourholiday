@@ -7,7 +7,14 @@ var bodyParser = require('body-parser');
 var todos = require('./routes/todos');
 var AV = require('leanengine');
 var ejs = require('ejs');
-
+//初始化
+var APP_ID = 'Sgr7sTJPjh8bblpRhAxnrQyC-gzGzoHsz';
+var APP_KEY = 'LWztj7YEEx9Oj39bKyO8J8CW';
+AV.init({
+  appId: APP_ID,
+  appKey: APP_KEY
+});
+var WorkDate = AV.Object.extend('workDate');
 var app = express();
 
 // 设置模板引擎
@@ -45,6 +52,10 @@ app.get('/view/demo', function(req, res) {
   res.render('demo/index');
 })
 
+app.get('/holiday', function(req, res) {
+  res.render('holiday/index');
+})
+
 //数据api
 app.get('/sendmessage', function(req, res) {
 
@@ -60,9 +71,105 @@ app.get('/sendmessage', function(req, res) {
     //发送失败
   });
 });
+//保存
+app.post('/holiday/modify', function(req, res) {
+  var query = new AV.Query('workDate');
+  query.equalTo('Date', Number(req.body.date));
+  query.find().then(function(result) {
+    if (result.length > 0) {
+      res.json({
+        message: "has saved"
+      })
+    } else {
+      var workDate = new WorkDate();
+      workDate.set({
+        'Date': Number(req.body.date),
+      });
+      workDate.save().then(function(result) {
+        res.json({
+          status: "success"
+        })
+      }, function(error) {
+        console.log(error)
+        res.json({
+          status: "failed"
+        })
+      })
+    }
+  }, function(error) {
+
+  })
+
+
+});
+
+
+app.get('/holiday/getworkday', function(req, res) {
+  var fromDate = Number(req.query.fromDate),
+    endDate = Number(req.query.endDate);
+  var queryLess = new AV.Query('workDate'),
+    queryGreater = new AV.Query('workDate');
+  queryLess.lessThanOrEqualTo('Date', endDate);
+  queryGreater.greaterThanOrEqualTo('Date', fromDate);
+  var query = AV.Query.and(queryLess, queryGreater);
+  query.find().then(function(result) {
+    res.json(result);
+  }, function(error) {
+    res.json({
+      status: 'failed',
+      message: error
+    })
+  })
+});
+
+app.post('/holiday/delete', function(req, res) {
+  var dateList = JSON.parse(req.body.dateList),
+    avObjectArray = [];
+  var cql = 'delete * from workDate where objectId in (' + dateList.join() + ')';
+  AV.Query.doCloudQuery('delete from workDate where objectId="57d7a79c128fe1005538883e"').then(function (data) {
+    res.json({
+      status:'success'
+    })
+   }, function (error) {
+     res.json({
+       status:'failed',
+       error
+     })
+   });
+  // AV.Query.doCloudQuery(cql).then(function(data) {
+  //   res.json({
+  //     status: 'success'
+  //   });
+  // }, function(error) {
+  //   res.json({
+  //     status: 'failed',
+  //     msg: error;
+  //   });
+  // })
+
+  // dateList.forEach(elem => {
+  //   console.log(elem);
+  //   var workDate = new WorkDate();
+  //   var dateObj = AV.Object.createWithoutData('workDate', elem);
+  //   console.log(dateObj);
+  //   avObjectArray.push(dateObj);
+  // });
+  // console.log(avObjectArray);
+  // AV.Object.destroyAll(avObjectArray).then(function(avobjs) {
+  //   res.json({
+  //     status: 'success'
+  //   });
+  // }, function(error) {
+  //   res.json({
+  //     status: 'failed',
+  //     message:error,
+  //   });
+  // });
+
+});
 
 app.get('/getholiday', function(req, res) {
-  var cql = 'select * from Holiday';
+  var cql = 'select * from Holiday ';
   AV.Query.doCloudQuery(cql).then(function(data) {
     // results 即为查询结果，它是一个 AV.Object 数组
     var results = data.results;

@@ -1,0 +1,81 @@
+@font-face {
+  font-family: anana;
+  font-weight: 400;
+  font-style: normal;
+  src: url(../../fonts/anana.eot);
+  src: url(../../fonts/anana.eot) format("eot");
+  src: url(../../fonts/anana.woff) format("woff");
+  src: url(../../fonts/anana.ttf) format("truetype"); }
+
+body,
+html {
+  width: 100%;
+  height: 100%; }
+
+* {
+  font-family: 'Segoe UI';
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap; }
+
+li {
+  list-style: none; }
+
+.left {
+  float: left; }
+
+.right {
+  float: right; }
+
+.wh-shade {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(30, 39, 68, 0.5); }
+
+.wh-holiday-container {
+  width: 100%;
+  height: 100%;
+  background: url(../../imgs/bg.jpg) 50% no-repeat; }
+  .wh-holiday-container .wh-content {
+    position: relative;
+    margin-top: 2rem; }
+  .wh-holiday-container h1 {
+    font-family: anana;
+    font-size: 3rem;
+    display: block;
+    cursor: pointer;
+    text-align: center;
+    white-space: initial;
+    word-wrap: break-word;
+    opacity: .75;
+    color: #21e7b6; }
+  .wh-holiday-container button {
+    font-size: 1rem;
+    line-height: 1rem;
+    padding: .5rem 1rem;
+    cursor: pointer;
+    color: #fff;
+    border: 2px solid #21e7b6;
+    border-radius: 5px;
+    background-color: transparent; }
+  .wh-holiday-container .panel {
+    display: table;
+    max-width: 100%;
+    margin: 0 auto;
+    white-space: normal; }
+    .wh-holiday-container .panel .data-show-content,
+    .wh-holiday-container .panel .title {
+      color: #fff; }
+    .wh-holiday-container .panel .left {
+      margin-bottom: 2rem; }
+  .wh-holiday-container .date-list {
+    font-size: 1.5rem;
+    text-align: center;
+    color: #fff; }
+    .wh-holiday-container .date-list h1 {
+      cursor: default; }
+    .wh-holiday-container .date-list .date-list-content {
+      margin-top: 1rem; }

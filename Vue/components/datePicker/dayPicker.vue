@@ -96,7 +96,6 @@ export default {
                     lastMonthDays = lastMonth.getDate();
                 //last month
                 var remainLastMonthdays = startDay.getDay() == 0 ? 7 : startDay.getDay();
-                console.log(remainLastMonthdays);
                 for (var i = 0; i < remainLastMonthdays; i++) {
                     days.unshift({
                         day: lastMonthDays - i,
@@ -155,6 +154,9 @@ export default {
                 return result;
             },
             'selet': function(date) {
+                this.childrenData.selectDay = date.day;
+                this.childrenData.selectYear = date.year;
+                this.childrenData.selectMonth = date.month;
                 this.$dispatch('select-day', date);
             }
         },

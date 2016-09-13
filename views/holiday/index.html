@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>holiday</title>
+  <link rel="stylesheet" href="/stylesheets/holiday/index.css" media="screen" title="no title">
+</head>
+
+<body>
+  <div class="wh-shade">
+
+  </div>
+  <div class="wh-holiday-container" id="wh-container">
+    <h1 class="title" @click="goHome">holiday</h1>
+    <div class="wh-content">
+      <div class="panel">
+        <div class="left">
+          <label class="title">From</label>
+          <date-picker class='from-date' :children-data="datePickerDataFrom"></date-picker>
+        </div>
+        <div class="left">
+          <label class="title">To</label>
+          <date-picker class='end-date' :children-data="datePickerDataEnd"></date-picker>
+        </div>
+        <div class="buttons left">
+          <button v-on:click="query">查询</button>
+          <button v-on:click="modify">修改或添加</button>
+        </div>
+      </div>
+      <div class="date-list">
+        <template v-if="true">
+        <h1>your additional working days</h1>
+        <div class="" v-if="isModify" @click='delete'>批量删除</div>
+        <div class="date-list-content">
+          <div class="wh-loaing" v-if="isLoading">
+            正在加载数据中。。。。。。
+          </div>
+          <div v-if="dayList.length==0&&!isLoading">
+            你没有额外的working days
+          </div>
+          <template v-for="day in dayList">
+        <div class="wh-grid">
+        <input v-if="isModify" type="checkbox" id={{day.Date}}  value={{day.objectId}} v-model="checkedDates">
+        <label for="{{day.Date}}">
+            {{day.Date|dateFormat}}
+        </label>
+        <div class="modify-panel" v-if="isModify">
+          <i @click="deleteSingle(day.objectId)">删除</i>
+          <i>修改</i>
+        </div>
+        </div>
+      </template>
+      </div>
+      </template>
+    </div>
+
+  </div>
+  </div>
+  <script type="text/javascript" src='3th-part/vue.js'></script>
+  <script type="text/javascript" src='3th-part/jquery-1.10.2.min.js'></script>
+  <script type="text/javascript" src='js/holiday/index.js'></script>
+</body>
+
+</html>

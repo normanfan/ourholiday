@@ -46,155 +46,142 @@
 
 	'use strict';
 	
-	var _layout = __webpack_require__(1);
-	
-	var _layout2 = _interopRequireDefault(_layout);
-	
 	var _datePicker = __webpack_require__(14);
 	
 	var _datePicker2 = _interopRequireDefault(_datePicker);
 	
-	var _grid = __webpack_require__(34);
-	
-	var _grid2 = _interopRequireDefault(_grid);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var components = {
-	  'my-layout': _layout2.default,
-	  'day-picker': _datePicker2.default,
-	  'grid': _grid2.default
-	
+	var currentDate = new Date(),
+	    nextWeekDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 7);
+	var initDateEnd = {
+	  selectYear: nextWeekDate.getFullYear(),
+	  selectMonth: nextWeekDate.getMonth() + 1,
+	  selectDay: nextWeekDate.getDate(),
+	  callback: 'selectDateEnd'
+	},
+	    initDateFrom = {
+	  selectYear: currentDate.getFullYear(),
+	  selectMonth: currentDate.getMonth() + 1,
+	  selectDay: currentDate.getDate(),
+	  callback: 'selectDateFrom'
 	};
 	var vm = new Vue({
-	  el: '#container',
+	  el: "#wh-container",
 	  data: {
-	    menus: [{
-	      name: 'dayPicker',
-	      components: 'day-picker',
-	      type: 1,
-	      data: {
-	        selectYear: 2016,
-	        selectMonth: 9,
-	        selectDay: 1
-	      }
-	    }, {
-	      name: 'grid',
-	      components: 'grid',
-	      type: 2,
-	      data: {
-	        options: {},
-	        columns: [{
-	          displayName: "aaa",
-	          columnName: "Hello"
-	        }, {
-	          displayName: "action",
-	          columnName: "Action",
-	          filter: function filter() {
-	            return "Action";
-	          }
-	        }],
-	        columnDatas: [{
-	          Hello: "a",
-	          ddd: 'cc'
-	        }, {
-	          Hello: "b"
-	        }]
-	      }
-	    }],
-	    childrenData: {},
-	    selectMenuIndex: 1
+	    datePickerDataFrom: initDateFrom,
+	    datePickerDataEnd: initDateEnd,
+	    dayList: [],
+	    isLoading: true,
+	    checkedDates: [],
+	    isModify: false
 	  },
-	  computed: {
-	    currentView: function currentView() {
-	      var menu = this.menus[this.selectMenuIndex];
-	      this.childrenData = menu.data;
-	      return menu.components;
+	  components: {
+	    'date-picker': _datePicker2.default
+	  },
+	  computed: {},
+	  ready: function ready() {
+	    queryDate(this);
+	  },
+	  methods: {
+	    deleteSingle: function deleteSingle(date) {
+	      deleteDates([date]);
+	    },
+	    delete: function _delete() {
+	      deleteDates(this.checkedDates);
+	    },
+	    query: function query() {
+	      this.isLoading = true;
+	      queryDate(this);
+	    },
+	    goHome: function goHome() {
+	      window.location.href = '/home';
+	    },
+	    modify: function modify() {
+	      this.isModify = !this.isModify;
+	      //  modifyDate();
 	    }
 	  },
-	  components: components,
-	  methods: {
-	    'checkSelected': function checkSelected(index) {
-	      if (index == this.selectMenuIndex) {
-	        return 'selected';
-	      }
-	    },
-	    'selectMenu': function selectMenu(index) {
-	      if (index == this.selectMenuIndex) {} else {
-	        this.selectMenuIndex = index;
-	      }
+	  filters: {
+	    dateFormat: function dateFormat(timeStamp) {
+	      var date = new Date(timeStamp),
+	          year = date.getFullYear(),
+	          month = date.getMonth() + 1,
+	          day = date.getDate();
+	      return year + "/" + month + "/" + day;
 	    }
 	  },
 	  events: {
-	    'selectDate': function selectDate(date) {
-	      this.menus[0].data.selectYear = date.year;
-	      this.menus[0].data.selectMonth = date.month;
-	      this.menus[0].data.selectDay = date.day;
+	    selectDateFrom: function selectDateFrom(date, currentView) {
+	      this.datePickerDataFrom.selectYear = date.year;
+	      this.datePickerDataFrom.selectMonth = date.month;
+	      this.datePickerDataFrom.selectDay = date.day;
+	      if (currentView == 'day-picker') {
+	        this.$broadcast('show-drop', false);
+	      }
+	    },
+	    selectDateEnd: function selectDateEnd(date, currentView) {
+	      this.datePickerDataEnd.selectYear = date.year;
+	      this.datePickerDataEnd.selectMonth = date.month;
+	      this.datePickerDataEnd.selectDay = date.day;
+	      if (currentView == 'day-picker') {
+	        this.$broadcast('show-drop', false);
+	      }
 	    }
-	
 	  }
 	});
-
-/***/ },
-/* 1 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__webpack_require__(2)
-	__vue_script__ = __webpack_require__(6)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] vue\\components\\layout.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(7)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) {
-	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	
+	function deleteDates(dateList) {
+	  if (dateList.length > 0) {
+	    $.ajax({
+	      url: "/holiday/delete",
+	      type: 'post',
+	      data: {
+	        dateList: JSON.stringify(dateList)
+	      }
+	    }).then(function (result) {
+	      console.log(result);
+	    });
+	  }
+	}
+	
+	function queryDate(self) {
+	  var endDate = Date.UTC(self.datePickerDataEnd.selectYear, self.datePickerDataEnd.selectMonth - 1, self.datePickerDataEnd.selectDay, 0, 0, 0),
+	      fromDate = Date.UTC(self.datePickerDataFrom.selectYear, self.datePickerDataFrom.selectMonth - 1, self.datePickerDataFrom.selectDay, 0, 0, 0);
+	  $.ajax({
+	    type: 'get',
+	    url: '/holiday/getworkday',
+	    data: {
+	      fromDate: fromDate,
+	      endDate: endDate
+	    }
+	  }).then(function (result) {
+	    console.log(result);
+	    self.isLoading = false;
+	    self.dayList = result;
+	  });
+	}
+	
+	function modifyDate() {
+	  var date = new Date();
+	  var timeStamp = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0);
+	  console.log('shijian' + timeStamp);
+	  $.ajax({
+	    type: 'post',
+	    url: '/holiday/modify',
+	    data: {
+	      date: timeStamp,
+	      name: "hello"
+	    }
+	  }).then(function (result) {
+	    console.log(result);
+	  });
 	}
 
-
 /***/ },
-/* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(3);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(5)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js!./../../node_modules/sass-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./layout.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js!./../../node_modules/sass-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./layout.vue");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(4)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "@charset \"UTF-8\";\n/* 必需 */\n.expand-transition {\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease;\n  height: auto;\n  padding: 10px;\n  background-color: #eee;\n  overflow: hidden; }\n\n/* .expand-enter 定义进入的开始状态 */\n/* .expand-leave 定义离开的结束状态 */\n.expand-enter,\n.expand-leave {\n  height: 0;\n  padding: 0 10px;\n  opacity: 0; }\n\n.nav-header {\n  width: 100%;\n  max-width: 1000px;\n  margin: 0 auto;\n  height: 70px;\n  white-space: nowrap;\n  font-size: 0; }\n  .nav-header .logo {\n    display: inline-block; }\n    .nav-header .logo img {\n      height: 70px; }\n  .nav-header .nav-header-right {\n    padding-top: 30px;\n    padding-left: 50px;\n    vertical-align: top;\n    height: 100%;\n    width: calc(100% - 75px);\n    font-size: 14px;\n    display: inline-block; }\n    .nav-header .nav-header-right .menu > div {\n      margin-right: 20px;\n      cursor: pointer;\n      position: relative; }\n    .nav-header .nav-header-right .menu .menu-panel .menu-dropdown {\n      position: absolute;\n      z-index: 100; }\n    .nav-header .nav-header-right .menu .menu-panel:focus {\n      outline: 0; }\n    .nav-header .nav-header-right .menu .menu-panel li {\n      height: 20px;\n      line-height: 20px; }\n    .nav-header .nav-header-right .search {\n      margin-right: 10px; }\n      .nav-header .nav-header-right .search input {\n        padding: 0 5px; }\n", ""]);
-	
-	// exports
-
-
-/***/ },
+/* 1 */,
+/* 2 */,
+/* 3 */,
 /* 4 */
 /***/ function(module, exports) {
 
@@ -473,60 +460,9 @@
 
 
 /***/ },
-/* 6 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.default = {
-	    data: function data() {
-	        return {
-	            isSHowMenu: false
-	        };
-	    },
-	
-	    computed: {},
-	    ready: function ready() {},
-	    attached: function attached() {},
-	
-	    methods: {
-	        "goHome": function goHome() {
-	            window.location.href = "/";
-	        },
-	        "showMenu": function showMenu() {
-	            this.isSHowMenu = !this.isSHowMenu;
-	            if (this.isSHowMenu) {}
-	        },
-	        "hideMenu": function hideMenu() {
-	            this.isSHowMenu = false;
-	        },
-	        'viewMore': function viewMore() {
-	            this.isSHowMenu = false;
-	            alert('i will go to see menu');
-	        },
-	        'viewDemo': function viewDemo() {
-	            window.location.href = "/view/demo";
-	        }
-	    },
-	    components: {}
-	};
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<div class='nav-header'>\n    <div class=\"logo\">\n        <img src=\"" + __webpack_require__(8) + "\" alt=\"\" />\n    </div>\n    <div class=\"nav-header-right\">\n        <div class='menu left'>\n            <div class=\"left\" v-on:click=\"goHome\">主页</div>\n            <div class=\"left menu-panel\" v-on:click.stop=\"showMenu\" v-on:blur=\"hideMenu\" tabindex=\"1\">菜单\n                <div class=\"menu-dropdown\" transition=\"expand\" v-el:menu v-if=\"isSHowMenu\" v-on:click.stop>\n                    <ul>\n                        <li v-on:click.stop=\"viewMore\">查看详情</li>\n                        <li v-on:click.stop=\"viewDemo\">我的DEMO</li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n        <div class=\"header-right right\">\n            <!-- <div class=\"search left\">\n                <input type=\"text\" placeholder=\"so so\">\n                <i>搜索</i>\n            </div> -->\n            <div class=\"login right\">\n                <a href=\"#\">登录</a>\n                <a href=\"#\">注册</a>\n            </div>\n        </div>\n    </div>\n</div>\n\n";
-
-/***/ },
-/* 8 */
-/***/ function(module, exports) {
-
-	module.exports = "data:image/jpeg;base64,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"
-
-/***/ },
+/* 6 */,
+/* 7 */,
+/* 8 */,
 /* 9 */,
 /* 10 */,
 /* 11 */,
@@ -1135,121 +1071,6 @@
 /***/ function(module, exports) {
 
 	module.exports = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<div class=\"date-pciker\" tabindex=\"1\" @blur=\"hideDropDown\">\n    <div class=\"data-show\">\n        <div class=\"data-show-content\" @click=\"showDropDown\">{{getValue()}}</div>\n    </div>\n    <div class=\"drop-down\" transition=\"expand\" v-if=\"isShow\">\n        <div class=\"date-control-panel\" @click.stop>\n            <span class=\"prev\" @click=\"changeDate('prev')\">prev</span>\n            <span class=\"panal-content\" @click=\"changeView\">{{getContent()}}</span>\n            <span class=\"next\" @click=\"changeDate('next')\">next</span>\n        </div>\n        <div class=\"date-pciker-content\" @click.stop>\n            <component :is=\"currentView\" :children-data=\"childrenData\"></component>\n        </div>\n    </div>\n</div>\n\n";
-
-/***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__webpack_require__(35)
-	__vue_script__ = __webpack_require__(37)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] Vue\\components\\grid\\grid.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(38)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) {
-	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
-	}
-
-
-/***/ },
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(36);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(5)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/sass-loader/index.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./grid.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/sass-loader/index.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./grid.vue");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(4)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "\n\n\n\n", ""]);
-	
-	// exports
-
-
-/***/ },
-/* 37 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = {
-	  data: function data() {
-	    return {};
-	  },
-	
-	  props: ['childrenData'],
-	  computed: {
-	    columns: function columns() {
-	      return this.childrenData.columns;
-	    },
-	    columnDatas: function columnDatas() {
-	      return this.childrenData.columnDatas;
-	    },
-	    rowNumber: function rowNumber() {
-	      if (this.childrenData.options.rowNumber) {
-	        return this.childrenData.options.rowNumber;
-	      } else {
-	        return 1;
-	      }
-	    }
-	
-	  },
-	  ready: function ready() {},
-	  attached: function attached() {},
-	
-	  methods: {},
-	  filters: {
-	    getValue: function getValue(key, value, index) {
-	      return index;
-	    },
-	    handleColumn: function handleColumn(rowData, column) {
-	      var result = rowData[column.columnName];
-	      if (column.filter != undefined && typeof column.filter == 'function') {
-	        result = column.filter(result);
-	      }
-	      return result;
-	    }
-	  },
-	  components: {}
-	};
-
-/***/ },
-/* 38 */
-/***/ function(module, exports) {
-
-	module.exports = "\n\n\n\n\n\n\n\n<div class=\"vue-data-grid\">\n    <!-- grid-head -->\n    <table>\n        <thead>\n            <th v-for=\"column in columns\">\n                {{column.displayName}}\n            </th>\n        </thead>\n        <tbody>\n            <tr v-for=\"data in columnDatas\" column-data={{data|json}}>\r\n                <td v-for=\"column in columns\">\r\n                  {{data|handleColumn column}}\r\n                </td>\n            </tr>\n        </tbody>\n    </table>\n</div>\n\n";
 
 /***/ }
 /******/ ]);
