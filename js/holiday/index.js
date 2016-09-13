@@ -46,7 +46,7 @@ var vm = new Vue({
     },
     modify: function() {
       this.isModify = !this.isModify;
-      //  modifyDate();
+        modifyDate();
     }
   },
   filters: {
@@ -87,7 +87,7 @@ function deleteDates(dateList) {
         dateList: JSON.stringify(dateList)
       }
     }).then(function(result) {
-      console.log(result)
+      vm.query();
     })
   }
 }
@@ -121,6 +121,6 @@ function modifyDate() {
       name: "hello"
     }
   }).then(function(result) {
-    console.log(result)
+    vm.query();
   })
 }

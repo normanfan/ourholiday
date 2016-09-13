@@ -99,7 +99,7 @@
 	    },
 	    modify: function modify() {
 	      this.isModify = !this.isModify;
-	      //  modifyDate();
+	      modifyDate();
 	    }
 	  },
 	  filters: {
@@ -140,7 +140,7 @@
 	        dateList: JSON.stringify(dateList)
 	      }
 	    }).then(function (result) {
-	      console.log(result);
+	      vm.query();
 	    });
 	  }
 	}
@@ -174,7 +174,7 @@
 	      name: "hello"
 	    }
 	  }).then(function (result) {
-	    console.log(result);
+	    vm.query();
 	  });
 	}
 

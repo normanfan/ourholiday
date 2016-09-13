@@ -32,7 +32,7 @@
       <div class="date-list">
         <template v-if="true">
         <h1>your additional working days</h1>
-        <div class="" v-if="isModify" @click='delete'>批量删除</div>
+        <div class="" v-if="isModify&&dayList.length>0" @click='delete'>批量删除</div>
         <div class="date-list-content">
           <div class="wh-loaing" v-if="isLoading">
             正在加载数据中。。。。。。

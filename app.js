@@ -90,7 +90,6 @@ app.post('/holiday/modify', function(req, res) {
           status: "success"
         })
       }, function(error) {
-        console.log(error)
         res.json({
           status: "failed"
         })
