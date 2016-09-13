@@ -2,17 +2,21 @@
 
 .img-slider {
     position: relative;
-    width: 200px;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     ul {
         transition: all .5s ease;
-        width: 600px;
+        width: 100%;
+        height: 100%;
         white-space: nowrap;
         li {
+            height: 100%;
+            width: 100%;
             display: inline-block;
             img {
-                width: 200px;
-                height: 170px;
+                width: 100%;
+                height: 100%;
             }
         }
     }
@@ -56,7 +60,7 @@ export default {
         },
         computed: {
             translate: function() {
-                var left = (0 - this.selectedIndex) * 200 + "px";
+                var left = (0 - this.selectedIndex) * 100 + "%";
                 return {
                     transform: 'translate(' + left + ')'
                 }
@@ -70,7 +74,7 @@ export default {
                 if (self.selectedIndex > self.imgs.length - 1) {
                     self.selectedIndex = 0;
                 }
-            }, 3000)
+            }, 5000)
         },
         attached() {},
         methods: {

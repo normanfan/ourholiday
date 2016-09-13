@@ -1,5 +1,14 @@
+@font-face {
+  font-family: anana;
+  font-weight: 400;
+  font-style: normal;
+  src: url(../fonts/anana.eot);
+  src: url(../fonts/anana.eot) format("eot");
+  src: url(../fonts/anana.woff) format("woff");
+  src: url(../fonts/anana.ttf) format("truetype"); }
+
 * {
-  font-family: "Segoe UI";
+  font-family: 'Segoe UI';
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -7,7 +16,9 @@
 
 body,
 html {
-  background-color: #f1f2f3; }
+  display: table;
+  width: 100%;
+  height: 100%; }
 
 li {
   list-style: none; }
@@ -18,15 +29,51 @@ li {
 .right {
   float: right; }
 
-#header {
-  position: fixed;
-  top: 0;
+#wh-container {
+  display: table-cell;
   width: 100%;
-  background-color: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); }
-
-.content {
-  width: 100%;
-  max-width: 1000px;
-  margin: 20px auto;
-  padding-top: 90px; }
+  height: 100%;
+  vertical-align: middle; }
+  #wh-container .wh-bg {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%; }
+  #wh-container .wh-shade {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(30, 39, 68, 0.5); }
+  #wh-container .wh-content {
+    position: relative;
+    width: 50%;
+    margin: 0 auto; }
+    #wh-container .wh-content .wh-name {
+      font-family: anana;
+      font-size: 5rem;
+      display: block;
+      text-align: center;
+      white-space: initial;
+      word-wrap: break-word;
+      opacity: .75;
+      color: #21e7b6; }
+    #wh-container .wh-content nav {
+      margin-top: 3rem; }
+      #wh-container .wh-content nav ul {
+        text-align: center;
+        white-space: normal; }
+      #wh-container .wh-content nav li {
+        font-size: 1.5rem;
+        line-height: 1.5rem;
+        display: inline-block;
+        margin-right: 3rem;
+        margin-bottom: 1.5rem;
+        padding: .75rem 1.5rem;
+        cursor: pointer;
+        color: #fff;
+        border: 2px solid #21e7b6;
+        border-radius: 5px; }
+        #wh-container .wh-content nav li a {
+          text-decoration: none;
+          color: #fff; }

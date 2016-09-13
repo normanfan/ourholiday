@@ -1,6 +1,17 @@
+@font-face
+{
+    font-family: anana;
+    font-weight: 400;
+    font-style: normal;
+
+    src: url(../fonts/anana.eot);
+    src: url(../fonts/anana.eot) format('eot');
+    src: url(../fonts/anana.woff) format('woff');
+    src: url(../fonts/anana.ttf) format('truetype');
+}
 *
 {
-    font-family:"Segoe UI";
+    font-family: 'Segoe UI';
 
     box-sizing: border-box;
     margin: 0;
@@ -11,7 +22,10 @@
 body,
 html
 {
-    background-color: #f1f2f3;
+    display: table;
+
+    width: 100%;
+    height: 100%;
 }
 li
 {
@@ -25,20 +39,102 @@ li
 {
     float: right;
 }
-#header
+// #header
+// {
+//     position: fixed;
+//     top: 0;
+//
+//     width: 100%;
+//
+//     background-color: #fff;
+//     box-shadow: 0 1px 3px rgba(0, 0, 0, .8);
+// }
+// .content
+// {
+//     width: 100%;
+//     max-width: 1000px;
+//     margin: 20px auto;
+//     padding-top: 90px;
+// }
+#wh-container
 {
-    position: fixed;
-    top: 0;
+    display: table-cell;
 
     width: 100%;
+    height: 100%;
 
-    background-color: #fff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .8);
-}
-.content
-{
-    width: 100%;
-    max-width: 1000px;
-    margin: 20px auto;
-    padding-top: 90px;
+    vertical-align: middle;
+
+    // background: url(../imgs/bg.jpg) 50% no-repeat;
+    .wh-bg
+    {
+        position: fixed;
+        top: 0;
+
+        width: 100%;
+        height: 100%;
+    }
+    .wh-shade
+    {
+        position: fixed;
+        top: 0;
+
+        width: 100%;
+        height: 100%;
+
+        background: rgba(30,39,68,.5);
+    }
+    .wh-content
+    {
+        position: relative;
+
+        width: 50%;
+        margin: 0 auto;
+        .wh-name
+        {
+            font-family: anana;
+            font-size: 5rem;
+
+            display: block;
+
+            text-align: center;
+            white-space: initial;
+            word-wrap: break-word;
+
+            opacity: .75;
+            color: #21e7b6;
+        }
+        nav
+        {
+            margin-top: 3rem;
+            ul
+            {
+                text-align: center;
+                white-space: normal;
+            }
+            li
+            {
+                font-size: 1.5rem;
+                line-height: 1.5rem;
+
+                display: inline-block;
+
+                margin-right: 3rem;
+                margin-bottom: 1.5rem;
+                padding: .75rem 1.5rem;
+
+                cursor: pointer;
+
+                color: #fff;
+                border: 2px solid #21e7b6;
+                border-radius: 5px;
+                a
+                {
+                    text-decoration: none;
+
+                    color: #fff;
+                }
+            }
+        }
+    }
 }

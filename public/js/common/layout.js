@@ -57,7 +57,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var vm = new Vue({
-	  el: "#container",
+	  el: "#wh-container",
 	  components: {
 	    'my-layout': _layout2.default,
 	    'img-slider': _imgSlider2.default
@@ -81,17 +81,7 @@
 	if (__vue_template__) {
 	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
 	}
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), false)
-	  if (!hotAPI.compatible) return
-	  var id = "./layout.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
+
 
 /***/ },
 /* 2 */
@@ -109,8 +99,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js!./../../node_modules/sass-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./layout.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js!./../../node_modules/sass-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./layout.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js!./../../node_modules/sass-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./layout.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js!./../../node_modules/sass-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./layout.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -128,7 +118,7 @@
 	
 	
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\n/* 必需 */\n.expand-transition {\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease;\n  height: auto;\n  padding: 10px;\n  background-color: #eee;\n  overflow: hidden; }\n\n/* .expand-enter 定义进入的开始状态 */\n/* .expand-leave 定义离开的结束状态 */\n.expand-enter,\n.expand-leave {\n  height: 0;\n  padding: 0 10px;\n  opacity: 0; }\n\n.nav-header {\n  width: 100%;\n  max-width: 1000px;\n  margin: 0 auto;\n  height: 70px;\n  white-space: nowrap;\n  font-size: 0; }\n  .nav-header .logo {\n    display: inline-block; }\n    .nav-header .logo img {\n      height: 70px; }\n  .nav-header .nav-header-right {\n    padding-top: 30px;\n    padding-left: 50px;\n    vertical-align: top;\n    height: 100%;\n    width: calc(100% - 75px);\n    font-size: 14px;\n    display: inline-block; }\n    .nav-header .nav-header-right .menu > div {\n      margin-right: 20px;\n      cursor: pointer;\n      position: relative; }\n    .nav-header .nav-header-right .menu .menu-panel .menu-dropdown {\n      position: absolute;\n      z-index: 100; }\n    .nav-header .nav-header-right .menu .menu-panel:focus {\n      outline: 0; }\n    .nav-header .nav-header-right .menu .menu-panel li {\n      height: 20px;\n      line-height: 20px; }\n    .nav-header .nav-header-right .search {\n      margin-right: 10px; }\n      .nav-header .nav-header-right .search input {\n        padding: 0 5px; }\n", "", {"version":3,"sources":["/./vue/components/layout.vue"],"names":[],"mappings":"AAAA,iBAAiB;AACjB,QAAQ;AACR;EACE,iCAAyB;EAAzB,yBAAyB;EACzB,aAAa;EACb,cAAc;EACd,uBAAuB;EACvB,iBAAiB,EAAE;;AAErB,6BAA6B;AAC7B,6BAA6B;AAC7B;;EAEE,UAAU;EACV,gBAAgB;EAChB,WAAW,EAAE;;AAEf;EACE,YAAY;EACZ,kBAAkB;EAClB,eAAe;EACf,aAAa;EACb,oBAAoB;EACpB,aAAa,EAAE;EACf;IACE,sBAAsB,EAAE;IACxB;MACE,aAAa,EAAE;EACnB;IACE,kBAAkB;IAClB,mBAAmB;IACnB,oBAAoB;IACpB,aAAa;IACb,yBAAyB;IACzB,gBAAgB;IAChB,sBAAsB,EAAE;IACxB;MACE,mBAAmB;MACnB,gBAAgB;MAChB,mBAAmB,EAAE;IACvB;MACE,mBAAmB;MACnB,aAAa,EAAE;IACjB;MACE,WAAW,EAAE;IACf;MACE,aAAa;MACb,kBAAkB,EAAE;IACtB;MACE,mBAAmB,EAAE;MACrB;QACE,eAAe,EAAE","file":"layout.vue","sourcesContent":["@charset \"UTF-8\";\n/* 必需 */\n.expand-transition {\n  transition: all .3s ease;\n  height: auto;\n  padding: 10px;\n  background-color: #eee;\n  overflow: hidden; }\n\n/* .expand-enter 定义进入的开始状态 */\n/* .expand-leave 定义离开的结束状态 */\n.expand-enter,\n.expand-leave {\n  height: 0;\n  padding: 0 10px;\n  opacity: 0; }\n\n.nav-header {\n  width: 100%;\n  max-width: 1000px;\n  margin: 0 auto;\n  height: 70px;\n  white-space: nowrap;\n  font-size: 0; }\n  .nav-header .logo {\n    display: inline-block; }\n    .nav-header .logo img {\n      height: 70px; }\n  .nav-header .nav-header-right {\n    padding-top: 30px;\n    padding-left: 50px;\n    vertical-align: top;\n    height: 100%;\n    width: calc(100% - 75px);\n    font-size: 14px;\n    display: inline-block; }\n    .nav-header .nav-header-right .menu > div {\n      margin-right: 20px;\n      cursor: pointer;\n      position: relative; }\n    .nav-header .nav-header-right .menu .menu-panel .menu-dropdown {\n      position: absolute;\n      z-index: 100; }\n    .nav-header .nav-header-right .menu .menu-panel:focus {\n      outline: 0; }\n    .nav-header .nav-header-right .menu .menu-panel li {\n      height: 20px;\n      line-height: 20px; }\n    .nav-header .nav-header-right .search {\n      margin-right: 10px; }\n      .nav-header .nav-header-right .search input {\n        padding: 0 5px; }\n"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "@charset \"UTF-8\";\n/* 必需 */\n.expand-transition {\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease;\n  height: auto;\n  padding: 10px;\n  background-color: #eee;\n  overflow: hidden; }\n\n/* .expand-enter 定义进入的开始状态 */\n/* .expand-leave 定义离开的结束状态 */\n.expand-enter,\n.expand-leave {\n  height: 0;\n  padding: 0 10px;\n  opacity: 0; }\n\n.nav-header {\n  width: 100%;\n  max-width: 1000px;\n  margin: 0 auto;\n  height: 70px;\n  white-space: nowrap;\n  font-size: 0; }\n  .nav-header .logo {\n    display: inline-block; }\n    .nav-header .logo img {\n      height: 70px; }\n  .nav-header .nav-header-right {\n    padding-top: 30px;\n    padding-left: 50px;\n    vertical-align: top;\n    height: 100%;\n    width: calc(100% - 75px);\n    font-size: 14px;\n    display: inline-block; }\n    .nav-header .nav-header-right .menu > div {\n      margin-right: 20px;\n      cursor: pointer;\n      position: relative; }\n    .nav-header .nav-header-right .menu .menu-panel .menu-dropdown {\n      position: absolute;\n      z-index: 100; }\n    .nav-header .nav-header-right .menu .menu-panel:focus {\n      outline: 0; }\n    .nav-header .nav-header-right .menu .menu-panel li {\n      height: 20px;\n      line-height: 20px; }\n    .nav-header .nav-header-right .search {\n      margin-right: 10px; }\n      .nav-header .nav-header-right .search input {\n        padding: 0 5px; }\n", ""]);
 	
 	// exports
 
@@ -482,17 +472,7 @@
 	if (__vue_template__) {
 	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
 	}
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), false)
-	  if (!hotAPI.compatible) return
-	  var id = "./imgSlider.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
+
 
 /***/ },
 /* 10 */
@@ -510,8 +490,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js!./../../node_modules/sass-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./imgSlider.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js!./../../node_modules/sass-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./imgSlider.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js!./../../node_modules/sass-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./imgSlider.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js!./../../node_modules/sass-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./imgSlider.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -529,7 +509,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".img-slider {\n  position: relative;\n  width: 200px;\n  overflow: hidden; }\n  .img-slider ul {\n    -webkit-transition: all .5s ease;\n    transition: all .5s ease;\n    width: 600px;\n    white-space: nowrap; }\n    .img-slider ul li {\n      display: inline-block; }\n      .img-slider ul li img {\n        width: 200px;\n        height: 170px; }\n  .img-slider .controller-panel {\n    text-align: center; }\n    .img-slider .controller-panel span {\n      margin-right: 5px;\n      cursor: pointer; }\n", "", {"version":3,"sources":["/./vue/components/imgSlider.vue"],"names":[],"mappings":"AAAA;EACE,mBAAmB;EACnB,aAAa;EACb,iBAAiB,EAAE;EACnB;IACE,iCAAyB;IAAzB,yBAAyB;IACzB,aAAa;IACb,oBAAoB,EAAE;IACtB;MACE,sBAAsB,EAAE;MACxB;QACE,aAAa;QACb,cAAc,EAAE;EACtB;IACE,mBAAmB,EAAE;IACrB;MACE,kBAAkB;MAClB,gBAAgB,EAAE","file":"imgSlider.vue","sourcesContent":[".img-slider {\n  position: relative;\n  width: 200px;\n  overflow: hidden; }\n  .img-slider ul {\n    transition: all .5s ease;\n    width: 600px;\n    white-space: nowrap; }\n    .img-slider ul li {\n      display: inline-block; }\n      .img-slider ul li img {\n        width: 200px;\n        height: 170px; }\n  .img-slider .controller-panel {\n    text-align: center; }\n    .img-slider .controller-panel span {\n      margin-right: 5px;\n      cursor: pointer; }\n"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, ".img-slider {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  overflow: hidden; }\n  .img-slider ul {\n    -webkit-transition: all .5s ease;\n    transition: all .5s ease;\n    width: 100%;\n    height: 100%;\n    white-space: nowrap; }\n    .img-slider ul li {\n      height: 100%;\n      width: 100%;\n      display: inline-block; }\n      .img-slider ul li img {\n        width: 100%;\n        height: 100%; }\n  .img-slider .controller-panel {\n    text-align: center; }\n    .img-slider .controller-panel span {\n      margin-right: 5px;\n      cursor: pointer; }\n", ""]);
 	
 	// exports
 
@@ -553,7 +533,7 @@
 	
 	    computed: {
 	        translate: function translate() {
-	            var left = (0 - this.selectedIndex) * 200 + "px";
+	            var left = (0 - this.selectedIndex) * 100 + "%";
 	            return {
 	                transform: 'translate(' + left + ')'
 	            };
@@ -567,7 +547,7 @@
 	            if (self.selectedIndex > self.imgs.length - 1) {
 	                self.selectedIndex = 0;
 	            }
-	        }, 3000);
+	        }, 5000);
 	    },
 	    attached: function attached() {},
 	
@@ -583,7 +563,7 @@
 /* 13 */
 /***/ function(module, exports) {
 
-	module.exports = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<div class=\"img-slider\">\n    <ul :style=\"translate\">\n        <li class=\"img\" v-for=\"img in imgs\" track-by=\"$index\">\n            <img :src=\"img\" alt=\"img\" />\n        </li>\n    </ul>\n    <div class=\"controller-panel\">\n        <span v-for=\"img in imgs\" v-on:click=\"changImg($index)\" track-by=\"$index\">{{$index+1}}</span>\n    </div>\n</div>\n\n";
+	module.exports = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<div class=\"img-slider\">\n    <ul :style=\"translate\">\n        <li class=\"img\" v-for=\"img in imgs\" track-by=\"$index\">\n            <img :src=\"img\" alt=\"img\" />\n        </li>\n    </ul>\n    <div class=\"controller-panel\">\n        <span v-for=\"img in imgs\" v-on:click=\"changImg($index)\" track-by=\"$index\">{{$index+1}}</span>\n    </div>\n</div>\n\n";
 
 /***/ }
 /******/ ]);
