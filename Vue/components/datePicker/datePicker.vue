@@ -40,7 +40,7 @@
     }
     .drop-down {
         position: absolute;
-        z-index: 2
+        z-index: 6
     }
 }
 

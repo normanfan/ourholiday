@@ -5,8 +5,60 @@
 
     width: 100%;
     height: 100%;
+    padding: 0 60px;
 
     background: url(../../imgs/bg.jpg) 50% no-repeat;
+    .add-panel
+    {
+        position: fixed;
+        top: 0;
+        right: 0;
+
+        display: table;
+
+        width: 100%;
+        height: 100%;
+
+        text-align: center;
+        .add-content
+        {
+            display: table-cell;
+
+            vertical-align: middle;
+            & > div
+            {
+                position: relative;
+
+                width: 70%;
+                max-width: 300px;
+                height: 200px;
+                margin: 0 auto;
+                padding: 20px;
+
+                background-color: #fff;
+                box-shadow: 0 0 10px #8a8a8a;
+            }
+            footer
+            {
+                position: absolute;
+                right: 20px;
+                bottom: 20px;
+            }
+            button
+            {
+                line-height: 28px;
+
+                min-width: 80px;
+                height: 30px;
+
+                cursor: pointer;
+
+                border: 0;
+                border: 1px solid silver;
+                background-color: #fff;
+            }
+        }
+    }
     .wh-content
     {
         position: relative;
@@ -18,7 +70,7 @@
         font-family: anana;
         font-size: 3rem;
 
-        display: block;
+        overflow: visible;
 
         cursor: pointer;
         text-align: center;
@@ -28,20 +80,30 @@
         opacity: .75;
         color: #21e7b6;
     }
-
-    button
+    .buttons
     {
-        font-size: 1rem;
-        line-height: 1rem;
+        display: table;
+        float: none;
 
-        padding: .5rem 1rem;
+        margin: 0 auto;
+        button
+        {
+            font-size: 1rem;
+            line-height: 1rem;
 
-        cursor: pointer;
+            padding: .5rem 1rem;
 
-        color: #fff;
-        border: 2px solid #21e7b6;
-        border-radius: 5px;
-        background-color: transparent;
+            cursor: pointer;
+
+            color: #fff;
+            border: 2px solid #21e7b6;
+            border-radius: 5px;
+            background-color: transparent;
+            & + button
+            {
+                margin-left: .5rem;
+            }
+        }
     }
     .panel
     {
@@ -62,6 +124,14 @@
             margin-bottom: 2rem;
         }
     }
+    .common-button
+    {
+        cursor: pointer;
+        & + .common-button
+        {
+            margin-left: 1rem;
+        }
+    }
     .date-list
     {
         font-size: 1.5rem;
@@ -71,11 +141,19 @@
         color: #fff;
         h1
         {
+            font-size: 2rem;
+
             cursor: default;
         }
         .date-list-content
         {
+            font-size: 1rem;
+
             margin-top: 1rem;
         }
+    }
+    .remain-holidays
+    {
+        color: #fff;
     }
 }

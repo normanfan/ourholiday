@@ -35,6 +35,17 @@ li {
   height: 100%;
   background: rgba(30, 39, 68, 0.5); }
 
+.wh-table {
+  display: table; }
+
+.wh-center {
+  margin: 0 auto; }
+
+.clear {
+  display: block;
+  clear: both;
+  content: ' '; }
+
 body,
 html {
   display: table; }
@@ -85,6 +96,9 @@ html {
         color: #fff;
         border: 2px solid #21e7b6;
         border-radius: 5px; }
+        @media (max-width: 620px) {
+          #wh-container .wh-content nav li {
+            margin-right: 0; } }
         #wh-container .wh-content nav li a {
           white-space: normal;
           text-decoration: none;

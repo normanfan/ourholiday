@@ -12,10 +12,28 @@
   <div class="wh-shade">
 
   </div>
+
   <div class="wh-holiday-container" id="wh-container">
-    <h1 class="title" @click="goHome">holiday</h1>
+    <left-panel :list="tabList" callback="changeTab"></left-panel>
+    <template v-if="true">
+    <div class="add-panel" v-if="showAdd">
+      <div class="add-content">
+        <div class="">
+          <div class="from">
+            <span>快选一个日子吧:</span>
+            <input type="date" name="from"  v-model='addFromDate'>
+          </div>
+          <footer>
+          <button @click="saveAdd">save</button>
+          <button @click="cancelAdd">cancel</button>
+        </footer>
+        </div>
+
+      </div>
+    </div>
+    <h1 class="title wh-table" @click="goHome">holiday</h1>
     <div class="wh-content">
-      <div class="panel">
+      <div class="panel panel-top">
         <div class="left">
           <label class="title">From</label>
           <date-picker class='from-date' :children-data="datePickerDataFrom"></date-picker>
@@ -26,13 +44,17 @@
         </div>
         <div class="buttons left">
           <button v-on:click="query">查询</button>
-          <button v-on:click="modify">修改或添加</button>
+          <button v-on:click="modify">{{getButtonText()}}</button>
         </div>
       </div>
-      <div class="date-list">
-        <template v-if="true">
+
+      <div class="date-list working-days" v-if="currentType=='working'">
         <h1>your additional working days</h1>
-        <div class="" v-if="isModify&&dayList.length>0" @click='delete'>批量删除</div>
+        <div class="wh-table wh-center">
+          <div class="left common-button" v-if="isModify&&dayList.length>0" @click='delete'>删除</div>
+          <div class="left common-button" v-if="isModify" @click='addItem("working")'>添加</div>
+          <div class="clear"></div>
+        </div>
         <div class="date-list-content">
           <div class="wh-loaing" v-if="isLoading">
             正在加载数据中。。。。。。
@@ -40,24 +62,54 @@
           <div v-if="dayList.length==0&&!isLoading">
             你没有额外的working days
           </div>
-          <template v-for="day in dayList">
+          <template v-for="day in dayList" v-if="!isLoading">
         <div class="wh-grid">
         <input v-if="isModify" type="checkbox" id={{day.Date}}  value={{day.objectId}} v-model="checkedDates">
         <label for="{{day.Date}}">
             {{day.Date|dateFormat}}
         </label>
-        <div class="modify-panel" v-if="isModify">
+        <div class="modify-panel right" v-if="isModify">
           <i @click="deleteSingle(day.objectId)">删除</i>
-          <i>修改</i>
         </div>
         </div>
-      </template>
-      </div>
-      </template>
-    </div>
+         </template>
+  </div>
+  </div>
 
+  <div class="date-list holiday-days" v-if="currentType=='holiday'">
+    <h1>your have requested holidays</h1>
+    <div class="wh-table wh-center">
+      <div class="left common-button" v-if="isModify&&dayList.length>0" @click='delete'>删除</div>
+      <div class="left common-button" v-if="isModify" @click='addItem("holiday")'>添加</div>
+      <div class="clear"></div>
+    </div>
+    <div class="date-list-content">
+      <div class="wh-loaing" v-if="isLoading">
+        正在加载数据中。。。。。。
+      </div>
+      <div v-if="dayList.length==0&&!isLoading">
+        你还没有请过假呢。。。
+      </div>
+      <template v-for="day in dayList" v-if="!isLoading">
+    <div class="wh-grid">
+    <input v-if="isModify" type="checkbox" id={{day.Date}}  value={{day.objectId}} v-model="checkedDates">
+    <label for="{{day.Date}}">
+        {{day.Date|dateFormat}}
+    </label>
+    <div class="modify-panel right" v-if="isModify">
+      <i @click="deleteSingle(day.objectId)">删除</i>
+    </div>
+    </div>
+     </template>
+    </div>
+  </div>
+  <div class="remain-holidays" v-if="currentType=='remainholiday'">
+    <span>你剩余的天数是</span>
   </div>
   </div>
+  </template>
+  </div>
+
   <script type="text/javascript" src='3th-part/vue.js'></script>
   <script type="text/javascript" src='3th-part/jquery-1.10.2.min.js'></script>
   <script type="text/javascript" src='js/holiday/index.js'></script>

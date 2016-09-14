@@ -44,51 +44,99 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	var _datePicker = __webpack_require__(14);
 	
 	var _datePicker2 = _interopRequireDefault(_datePicker);
 	
+	var _leftPanel = __webpack_require__(39);
+	
+	var _leftPanel2 = _interopRequireDefault(_leftPanel);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var currentDate = new Date(),
-	    nextWeekDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 7);
+	    lastWeekDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - 7);
 	var initDateEnd = {
-	  selectYear: nextWeekDate.getFullYear(),
-	  selectMonth: nextWeekDate.getMonth() + 1,
-	  selectDay: nextWeekDate.getDate(),
-	  callback: 'selectDateEnd'
-	},
-	    initDateFrom = {
 	  selectYear: currentDate.getFullYear(),
 	  selectMonth: currentDate.getMonth() + 1,
 	  selectDay: currentDate.getDate(),
+	  callback: 'selectDateEnd'
+	},
+	    initDateFrom = {
+	  selectYear: lastWeekDate.getFullYear(),
+	  selectMonth: lastWeekDate.getMonth() + 1,
+	  selectDay: lastWeekDate.getDate(),
 	  callback: 'selectDateFrom'
 	};
+	
 	var vm = new Vue({
 	  el: "#wh-container",
 	  data: {
+	    showAdd: false,
 	    datePickerDataFrom: initDateFrom,
 	    datePickerDataEnd: initDateEnd,
 	    dayList: [],
+	    addFromDate: '',
+	    addEndDate: '',
+	    holidayList: [],
 	    isLoading: true,
 	    checkedDates: [],
-	    isModify: false
+	    isModify: false,
+	    currentType: 'working',
+	    tabList: [{
+	      key: 'working',
+	      value: "working days"
+	    }, {
+	      key: 'holiday',
+	      value: "holiday days"
+	    }, {
+	      key: 'remainholiday',
+	      value: "remain holiday days"
+	    }]
 	  },
 	  components: {
-	    'date-picker': _datePicker2.default
+	    'date-picker': _datePicker2.default,
+	    'left-panel': _leftPanel2.default
 	  },
 	  computed: {},
 	  ready: function ready() {
 	    queryDate(this);
 	  },
 	  methods: {
+	    saveAdd: function saveAdd() {
+	      this.showAdd = false;
+	      var classObj = 'workDate';
+	      if (this.currentType == "holiday") {
+	        classObj = 'holidayDate';
+	      }
+	      var dateArr = this.addFromDate.split('-');
+	      if (dateArr.length > 0) {
+	
+	        modifyDate({
+	          classObj: classObj,
+	          year: dateArr[0],
+	          month: Number(dateArr[1]) - 1,
+	          date: dateArr[2]
+	        });
+	      }
+	    },
+	    addItem: function addItem(type) {
+	      this.showAdd = true;
+	    },
+	    getButtonText: function getButtonText() {
+	      var str = "修改";
+	      if (this.isModify) {
+	        str = "取消修改";
+	      }
+	      return str;
+	    },
 	    deleteSingle: function deleteSingle(date) {
-	      deleteDates([date]);
+	      deleteDates([date], this);
 	    },
 	    delete: function _delete() {
-	      deleteDates(this.checkedDates);
+	      deleteDates(this.checkedDates, this);
 	    },
 	    query: function query() {
 	      this.isLoading = true;
@@ -99,7 +147,10 @@
 	    },
 	    modify: function modify() {
 	      this.isModify = !this.isModify;
-	      modifyDate();
+	      if (this.isModify) {} else {}
+	    },
+	    cancelAdd: function cancelAdd() {
+	      this.showAdd = false;
 	    }
 	  },
 	  filters: {
@@ -112,6 +163,13 @@
 	    }
 	  },
 	  events: {
+	    changeTab: function changeTab(item) {
+	      if (item.key == this.currentType) {} else {
+	        this.currentType = item.key;
+	        queryDate(this);
+	      }
+	      this.$broadcast('showNormal', false);
+	    },
 	    selectDateFrom: function selectDateFrom(date, currentView) {
 	      this.datePickerDataFrom.selectYear = date.year;
 	      this.datePickerDataFrom.selectMonth = date.month;
@@ -131,13 +189,18 @@
 	  }
 	});
 	
-	function deleteDates(dateList) {
+	function deleteDates(dateList, self) {
+	  var classObj = 'workDate';
+	  if (self.currentType == "holiday") {
+	    classObj = 'holidayDate';
+	  }
 	  if (dateList.length > 0) {
 	    $.ajax({
 	      url: "/holiday/delete",
 	      type: 'post',
 	      data: {
-	        dateList: JSON.stringify(dateList)
+	        dateList: JSON.stringify(dateList),
+	        classObj: classObj
 	      }
 	    }).then(function (result) {
 	      vm.query();
@@ -147,31 +210,33 @@
 	
 	function queryDate(self) {
 	  var endDate = Date.UTC(self.datePickerDataEnd.selectYear, self.datePickerDataEnd.selectMonth - 1, self.datePickerDataEnd.selectDay, 0, 0, 0),
-	      fromDate = Date.UTC(self.datePickerDataFrom.selectYear, self.datePickerDataFrom.selectMonth - 1, self.datePickerDataFrom.selectDay, 0, 0, 0);
+	      fromDate = Date.UTC(self.datePickerDataFrom.selectYear, self.datePickerDataFrom.selectMonth - 1, self.datePickerDataFrom.selectDay, 0, 0, 0),
+	      classObj = 'workDate';
+	  if (self.currentType == "holiday") {
+	    classObj = 'holidayDate';
+	  }
 	  $.ajax({
 	    type: 'get',
 	    url: '/holiday/getworkday',
 	    data: {
 	      fromDate: fromDate,
-	      endDate: endDate
+	      endDate: endDate,
+	      classObj: classObj
 	    }
 	  }).then(function (result) {
-	    console.log(result);
 	    self.isLoading = false;
 	    self.dayList = result;
 	  });
 	}
 	
-	function modifyDate() {
-	  var date = new Date();
-	  var timeStamp = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0);
-	  console.log('shijian' + timeStamp);
+	function modifyDate(options) {
+	  var timeStamp = Date.UTC(options.year, options.month, options.date, 0, 0, 0);
 	  $.ajax({
 	    type: 'post',
 	    url: '/holiday/modify',
 	    data: {
 	      date: timeStamp,
-	      name: "hello"
+	      classObj: options.classObj
 	    }
 	  }).then(function (result) {
 	    vm.query();
@@ -521,7 +586,7 @@
 	
 	
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\n.expand-transition {\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease;\n  height: auto;\n  padding: 10px;\n  background-color: #eee;\n  overflow: hidden; }\n\n/* .expand-enter 定义进入的开始状态 */\n/* .expand-leave 定义离开的结束状态 */\n.expand-enter,\n.expand-leave {\n  height: 0;\n  padding: 0 10px;\n  opacity: 0; }\n\n.date-pciker {\n  width: 200px;\n  position: relative; }\n  .date-pciker:focus {\n    outline: 0; }\n  .date-pciker .date-control-panel span {\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n    cursor: pointer;\n    display: inline-block; }\n  .date-pciker .content {\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n    cursor: pointer; }\n  .date-pciker .drop-down {\n    position: absolute;\n    z-index: 2; }\n", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\n.expand-transition {\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease;\n  height: auto;\n  padding: 10px;\n  background-color: #eee;\n  overflow: hidden; }\n\n/* .expand-enter 定义进入的开始状态 */\n/* .expand-leave 定义离开的结束状态 */\n.expand-enter,\n.expand-leave {\n  height: 0;\n  padding: 0 10px;\n  opacity: 0; }\n\n.date-pciker {\n  width: 200px;\n  position: relative; }\n  .date-pciker:focus {\n    outline: 0; }\n  .date-pciker .date-control-panel span {\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n    cursor: pointer;\n    display: inline-block; }\n  .date-pciker .content {\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n    cursor: pointer; }\n  .date-pciker .drop-down {\n    position: absolute;\n    z-index: 6; }\n", ""]);
 	
 	// exports
 
@@ -1071,6 +1136,137 @@
 /***/ function(module, exports) {
 
 	module.exports = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<div class=\"date-pciker\" tabindex=\"1\" @blur=\"hideDropDown\">\n    <div class=\"data-show\">\n        <div class=\"data-show-content\" @click=\"showDropDown\">{{getValue()}}</div>\n    </div>\n    <div class=\"drop-down\" transition=\"expand\" v-if=\"isShow\">\n        <div class=\"date-control-panel\" @click.stop>\n            <span class=\"prev\" @click=\"changeDate('prev')\">prev</span>\n            <span class=\"panal-content\" @click=\"changeView\">{{getContent()}}</span>\n            <span class=\"next\" @click=\"changeDate('next')\">next</span>\n        </div>\n        <div class=\"date-pciker-content\" @click.stop>\n            <component :is=\"currentView\" :children-data=\"childrenData\"></component>\n        </div>\n    </div>\n</div>\n\n";
+
+/***/ },
+/* 34 */,
+/* 35 */,
+/* 36 */,
+/* 37 */,
+/* 38 */,
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__webpack_require__(40)
+	__vue_script__ = __webpack_require__(42)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] Vue\\components\\leftPanel\\leftPanel.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(43)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) {
+	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	}
+
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(41);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(5)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/sass-loader/index.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./leftPanel.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/sass-loader/index.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./leftPanel.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(4)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, ".left-panel {\n  position: fixed;\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease;\n  z-index: 5;\n  left: 0;\n  color: #fff;\n  background: #333;\n  padding: 20px;\n  border-top-right-radius: 10px;\n  border-bottom-right-radius: 10px;\n  min-height: 169px;\n  top: 32%; }\n  .left-panel .normal {\n    position: relative li;\n      position-cursor: pointer; }\n    .left-panel .normal li {\n      color: grey;\n      cursor: pointer;\n      line-height: 25px;\n      height: 25px; }\n      .left-panel .normal li + li {\n        margin-top: 10px; }\n      .left-panel .normal li:hover, .left-panel .normal li.selected {\n        color: #fff; }\n    .left-panel .normal .hide {\n      position: absolute;\n      bottom: 9px;\n      cursor: pointer; }\n  .left-panel .mini {\n    width: 17px;\n    white-space: normal;\n    cursor: pointer; }\n", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 42 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = {
+	    data: function data() {
+	        return {
+	            isNormal: false,
+	            location: {
+	                isReady: false
+	            },
+	            selectIndex: 0
+	        };
+	    },
+	
+	    props: ['list', 'callback'],
+	    computed: {
+	        translate: function translate() {}
+	    },
+	    ready: function ready() {},
+	    attached: function attached() {},
+	
+	    events: {
+	        showNormal: function showNormal(isShow) {
+	            this.isNormal = isShow;
+	        }
+	    },
+	    methods: {
+	        getClass: function getClass(index) {
+	            var str = "";
+	            if (this.selectIndex == index) {
+	                str = 'selected';
+	            };
+	            return str;
+	        },
+	        mouseDown: function mouseDown(event) {
+	            console.log();
+	            this.location.isReady = true;
+	        },
+	        mouseUp: function mouseUp() {
+	            this.location.isReady = false;
+	        },
+	        mouseMove: function mouseMove(event) {
+	            console.log(event.clientY);
+	        },
+	        showNormal: function showNormal(isShow) {
+	            this.isNormal = isShow;
+	        },
+	        selectItem: function selectItem(item, index) {
+	            this.selectIndex = index;
+	            this.$dispatch(this.callback, item);
+	        }
+	    },
+	    components: {}
+	};
+
+/***/ },
+/* 43 */
+/***/ function(module, exports) {
+
+	module.exports = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<div class=\"left-panel\">\n    <div class=\"normal\" v-if=\"isNormal\">\n        <ul>\n            <li v-for=\"item in list\" @click=\"selectItem(item,$index)\" :class=\"getClass($index)\">{{item.value}}</li>\n        </ul>\n        <div class=\"hide\" @click=\"showNormal(false)\">hide me</div>\n    </div>\n    <div class=\"mini\" @click=\"showNormal(true)\" v-else>\n        快来点我切换呀\n    </div>\n</div>\n\n";
 
 /***/ }
 /******/ ]);

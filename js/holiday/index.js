@@ -1,41 +1,86 @@
 import datePicker from "../../Vue/components/datePicker/datePicker.vue";
+import leftPanel from "../../Vue/components/leftPanel/leftPanel.vue";
 var currentDate = new Date(),
-  nextWeekDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 7);
+  lastWeekDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - 7);
 var initDateEnd = {
-    selectYear: nextWeekDate.getFullYear(),
-    selectMonth: nextWeekDate.getMonth() + 1,
-    selectDay: nextWeekDate.getDate(),
-    callback: 'selectDateEnd'
-  },
-  initDateFrom = {
     selectYear: currentDate.getFullYear(),
     selectMonth: currentDate.getMonth() + 1,
     selectDay: currentDate.getDate(),
+    callback: 'selectDateEnd'
+  },
+  initDateFrom = {
+    selectYear: lastWeekDate.getFullYear(),
+    selectMonth: lastWeekDate.getMonth() + 1,
+    selectDay: lastWeekDate.getDate(),
     callback: 'selectDateFrom'
   };
+
 var vm = new Vue({
   el: "#wh-container",
   data: {
+    showAdd: false,
     datePickerDataFrom: initDateFrom,
     datePickerDataEnd: initDateEnd,
     dayList: [],
+    addFromDate: '',
+    addEndDate: '',
+    holidayList: [],
     isLoading: true,
     checkedDates: [],
-    isModify: false
+    isModify: false,
+    currentType: 'working',
+    tabList: [{
+      key: 'working',
+      value: "working days"
+    }, {
+      key: 'holiday',
+      value: "holiday days"
+    }, {
+      key: 'remainholiday',
+      value: "remain holiday days"
+    }]
   },
   components: {
-    'date-picker': datePicker
+    'date-picker': datePicker,
+    'left-panel': leftPanel
   },
   computed: {},
   ready: function() {
     queryDate(this)
   },
   methods: {
+    saveAdd: function() {
+      this.showAdd = false;
+      var classObj = 'workDate';
+      if (this.currentType == "holiday") {
+        classObj = 'holidayDate';
+      }
+      var dateArr = this.addFromDate.split('-')
+      if (dateArr.length > 0) {
+
+        modifyDate({
+          classObj: classObj,
+          year: dateArr[0],
+          month: Number(dateArr[1]) - 1,
+          date: dateArr[2]
+        });
+      }
+    },
+    addItem: function(type) {
+      this.showAdd = true;
+    },
+    getButtonText: function() {
+      var str = "修改"
+      if (this.isModify) {
+        str = "取消修改"
+      }
+      return str;
+    },
     deleteSingle: function(date) {
-      deleteDates([date]);
+      deleteDates([date], this);
     },
     delete: function() {
-      deleteDates(this.checkedDates);
+      deleteDates(this.checkedDates, this);
     },
     query: function() {
       this.isLoading = true;
@@ -46,7 +91,12 @@ var vm = new Vue({
     },
     modify: function() {
       this.isModify = !this.isModify;
-        modifyDate();
+      if (this.isModify) {} else {
+
+      }
+    },
+    cancelAdd: function() {
+      this.showAdd = false;
     }
   },
   filters: {
@@ -59,6 +109,15 @@ var vm = new Vue({
     }
   },
   events: {
+    changeTab: function(item) {
+      if (item.key == this.currentType) {
+
+      } else {
+        this.currentType = item.key;
+        queryDate(this);
+      }
+      this.$broadcast('showNormal', false);
+    },
     selectDateFrom: function(date, currentView) {
       this.datePickerDataFrom.selectYear = date.year;
       this.datePickerDataFrom.selectMonth = date.month;
@@ -78,13 +137,18 @@ var vm = new Vue({
   }
 })
 
-function deleteDates(dateList) {
+function deleteDates(dateList, self) {
+  var classObj = 'workDate';
+  if (self.currentType == "holiday") {
+    classObj = 'holidayDate';
+  }
   if (dateList.length > 0) {
     $.ajax({
       url: "/holiday/delete",
       type: 'post',
       data: {
-        dateList: JSON.stringify(dateList)
+        dateList: JSON.stringify(dateList),
+        classObj: classObj
       }
     }).then(function(result) {
       vm.query();
@@ -94,31 +158,33 @@ function deleteDates(dateList) {
 
 function queryDate(self) {
   var endDate = Date.UTC(self.datePickerDataEnd.selectYear, self.datePickerDataEnd.selectMonth - 1, self.datePickerDataEnd.selectDay, 0, 0, 0),
-    fromDate = Date.UTC(self.datePickerDataFrom.selectYear, self.datePickerDataFrom.selectMonth - 1, self.datePickerDataFrom.selectDay, 0, 0, 0);
+    fromDate = Date.UTC(self.datePickerDataFrom.selectYear, self.datePickerDataFrom.selectMonth - 1, self.datePickerDataFrom.selectDay, 0, 0, 0),
+    classObj = 'workDate';
+  if (self.currentType == "holiday") {
+    classObj = 'holidayDate';
+  }
   $.ajax({
     type: 'get',
     url: '/holiday/getworkday',
     data: {
       fromDate: fromDate,
-      endDate: endDate
+      endDate: endDate,
+      classObj: classObj
     }
   }).then(function(result) {
-    console.log(result);
     self.isLoading = false;
     self.dayList = result;
   })
 }
 
-function modifyDate() {
-  var date = new Date();
-  var timeStamp = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0)
-  console.log('shijian' + timeStamp);
+function modifyDate(options) {
+  var timeStamp = Date.UTC(options.year, options.month, options.date, 0, 0, 0);
   $.ajax({
     type: 'post',
     url: '/holiday/modify',
     data: {
       date: timeStamp,
-      name: "hello"
+      classObj: options.classObj
     }
   }).then(function(result) {
     vm.query();

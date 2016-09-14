@@ -4,27 +4,9 @@ body,
 html
 {
     display: table;
-
-  
 }
 
-// #header
-// {
-//     position: fixed;
-//     top: 0;
-//
-//     width: 100%;
-//
-//     background-color: #fff;
-//     box-shadow: 0 1px 3px rgba(0, 0, 0, .8);
-// }
-// .content
-// {
-//     width: 100%;
-//     max-width: 1000px;
-//     margin: 20px auto;
-//     padding-top: 90px;
-// }
+
 #wh-container
 {
     display: table-cell;
@@ -81,6 +63,7 @@ html
                 text-align: center;
                 white-space: normal;
             }
+
             li
             {
                 font-size: 1.5rem;
@@ -98,6 +81,13 @@ html
                 color: #fff;
                 border: 2px solid #21e7b6;
                 border-radius: 5px;
+                @media (max-width:620px )
+                {
+                    &
+                    {
+                        margin-right: 0;
+                    }
+                }
                 a
                 {
                     white-space: normal;

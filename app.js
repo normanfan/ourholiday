@@ -15,6 +15,7 @@ AV.init({
   appKey: APP_KEY
 });
 var WorkDate = AV.Object.extend('workDate');
+var HoliDayDate = AV.Object.extend('holidayDate');
 var app = express();
 
 // 设置模板引擎
@@ -73,7 +74,8 @@ app.get('/sendmessage', function(req, res) {
 });
 //保存
 app.post('/holiday/modify', function(req, res) {
-  var query = new AV.Query('workDate');
+  var classObj = req.body.classObj;
+  var query = new AV.Query(classObj);
   query.equalTo('Date', Number(req.body.date));
   query.find().then(function(result) {
     if (result.length > 0) {
@@ -81,7 +83,12 @@ app.post('/holiday/modify', function(req, res) {
         message: "has saved"
       })
     } else {
-      var workDate = new WorkDate();
+      var workDate = '';
+      if (classObj == "workDate") {
+        workDate = new WorkDate();
+      } else {
+        workDate = new HoliDayDate();
+      }
       workDate.set({
         'Date': Number(req.body.date),
       });
@@ -104,10 +111,11 @@ app.post('/holiday/modify', function(req, res) {
 
 
 app.get('/holiday/getworkday', function(req, res) {
+  var classObj = req.query.classObj;
   var fromDate = Number(req.query.fromDate),
     endDate = Number(req.query.endDate);
-  var queryLess = new AV.Query('workDate'),
-    queryGreater = new AV.Query('workDate');
+  var queryLess = new AV.Query(classObj),
+    queryGreater = new AV.Query(classObj);
   queryLess.lessThanOrEqualTo('Date', endDate);
   queryGreater.greaterThanOrEqualTo('Date', fromDate);
   var query = AV.Query.and(queryLess, queryGreater);
@@ -122,6 +130,7 @@ app.get('/holiday/getworkday', function(req, res) {
 });
 
 app.post('/holiday/delete', function(req, res) {
+  var classObj = req.body.classObj;
   var dateList = JSON.parse(req.body.dateList),
     avObjectArray = [];
   // var cql = 'delete * from workDate where objectId in (' + dateList.join() + ')';
@@ -148,7 +157,7 @@ app.post('/holiday/delete', function(req, res) {
 
   dateList.forEach(elem => {
     var workDate = new WorkDate();
-    var dateObj = AV.Object.createWithoutData('workDate', elem);
+    var dateObj = AV.Object.createWithoutData(classObj, elem);
     avObjectArray.push(dateObj);
   });
   AV.Object.destroyAll(avObjectArray).then(function(avobjs) {
@@ -163,6 +172,7 @@ app.post('/holiday/delete', function(req, res) {
   });
 
 });
+
 
 app.get('/getholiday', function(req, res) {
   var cql = 'select * from Holiday ';

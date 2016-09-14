@@ -547,7 +547,7 @@
 	            if (self.selectedIndex > self.imgs.length - 1) {
 	                self.selectedIndex = 0;
 	            }
-	        }, 5000);
+	        }, 3000);
 	    },
 	    attached: function attached() {},
 	

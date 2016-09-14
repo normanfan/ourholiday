@@ -35,33 +35,83 @@ li {
   height: 100%;
   background: rgba(30, 39, 68, 0.5); }
 
+.wh-table {
+  display: table; }
+
+.wh-center {
+  margin: 0 auto; }
+
+.clear {
+  display: block;
+  clear: both;
+  content: ' '; }
+
 .wh-holiday-container {
   overflow: auto;
   width: 100%;
   height: 100%;
+  padding: 0 60px;
   background: url(../../imgs/bg.jpg) 50% no-repeat; }
+  .wh-holiday-container .add-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: table;
+    width: 100%;
+    height: 100%;
+    text-align: center; }
+    .wh-holiday-container .add-panel .add-content {
+      display: table-cell;
+      vertical-align: middle; }
+      .wh-holiday-container .add-panel .add-content > div {
+        position: relative;
+        width: 70%;
+        max-width: 300px;
+        height: 200px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px #8a8a8a; }
+      .wh-holiday-container .add-panel .add-content footer {
+        position: absolute;
+        right: 20px;
+        bottom: 20px; }
+      .wh-holiday-container .add-panel .add-content button {
+        line-height: 28px;
+        min-width: 80px;
+        height: 30px;
+        cursor: pointer;
+        border: 0;
+        border: 1px solid silver;
+        background-color: #fff; }
   .wh-holiday-container .wh-content {
     position: relative;
     margin-top: 2rem; }
   .wh-holiday-container h1 {
     font-family: anana;
     font-size: 3rem;
-    display: block;
+    overflow: visible;
     cursor: pointer;
     text-align: center;
     white-space: initial;
     word-wrap: break-word;
     opacity: .75;
     color: #21e7b6; }
-  .wh-holiday-container button {
-    font-size: 1rem;
-    line-height: 1rem;
-    padding: .5rem 1rem;
-    cursor: pointer;
-    color: #fff;
-    border: 2px solid #21e7b6;
-    border-radius: 5px;
-    background-color: transparent; }
+  .wh-holiday-container .buttons {
+    display: table;
+    float: none;
+    margin: 0 auto; }
+    .wh-holiday-container .buttons button {
+      font-size: 1rem;
+      line-height: 1rem;
+      padding: .5rem 1rem;
+      cursor: pointer;
+      color: #fff;
+      border: 2px solid #21e7b6;
+      border-radius: 5px;
+      background-color: transparent; }
+      .wh-holiday-container .buttons button + button {
+        margin-left: .5rem; }
   .wh-holiday-container .panel {
     display: table;
     max-width: 100%;
@@ -72,11 +122,19 @@ li {
       color: #fff; }
     .wh-holiday-container .panel .left {
       margin-bottom: 2rem; }
+  .wh-holiday-container .common-button {
+    cursor: pointer; }
+    .wh-holiday-container .common-button + .common-button {
+      margin-left: 1rem; }
   .wh-holiday-container .date-list {
     font-size: 1.5rem;
     text-align: center;
     color: #fff; }
     .wh-holiday-container .date-list h1 {
+      font-size: 2rem;
       cursor: default; }
     .wh-holiday-container .date-list .date-list-content {
+      font-size: 1rem;
       margin-top: 1rem; }
+  .wh-holiday-container .remain-holidays {
+    color: #fff; }
