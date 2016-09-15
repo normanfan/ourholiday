@@ -109,6 +109,8 @@ app.post('/holiday/modify', function(req, res) {
 
 });
 
+app.get('/holiday/getcount')
+
 
 app.get('/holiday/getworkday', function(req, res) {
   var classObj = req.query.classObj;
@@ -203,6 +205,28 @@ app.get('/getworkday', function(req, res) {
     });
   });
 });
+
+app.get('/holiday/remain', function(req, res) {
+  var workdays = new AV.Query('workDate');
+  workdays.count().then(function(workDaysCount) {
+    var holidays = new AV.Query('holidayDate');
+    holidays.count().then(function(holidayCount) {
+      res.json({
+        status: 'success',
+        workDayCount:workDaysCount,
+        holidayCount:holidayCount
+      });
+    }, function(error) {
+      res.json({
+        status: 'failed'
+      });
+    });
+  }, function(error) {
+    res.json({
+      status: 'failed'
+    });
+  });
+})
 
 app.use(function(req, res, next) {
   // 如果任何一个路由都没有返回响应，则抛出一个 404 异常给后续的异常处理器

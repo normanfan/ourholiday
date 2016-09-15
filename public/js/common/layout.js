@@ -509,7 +509,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".img-slider {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  overflow: hidden; }\n  .img-slider ul {\n    -webkit-transition: all .5s ease;\n    transition: all .5s ease;\n    width: 100%;\n    height: 100%;\n    white-space: nowrap; }\n    .img-slider ul li {\n      height: 100%;\n      width: 100%;\n      display: inline-block; }\n      .img-slider ul li img {\n        width: 100%;\n        height: 100%; }\n  .img-slider .controller-panel {\n    text-align: center; }\n    .img-slider .controller-panel span {\n      margin-right: 5px;\n      cursor: pointer; }\n", ""]);
+	exports.push([module.id, ".img-slider {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  overflow: hidden; }\n  .img-slider ul {\n    -webkit-transition: all .5s ease;\n    transition: all .5s ease;\n    width: 100%;\n    height: 100%;\n    white-space: nowrap; }\n    .img-slider ul.no-animation {\n      -webkit-transition: none;\n      transition: none; }\n    .img-slider ul li {\n      height: 100%;\n      width: 100%;\n      display: inline-block; }\n      .img-slider ul li img {\n        width: 100%;\n        height: 100%; }\n  .img-slider .controller-panel {\n    text-align: center; }\n    .img-slider .controller-panel span {\n      margin-right: 5px;\n      cursor: pointer; }\n", ""]);
 	
 	// exports
 
@@ -527,31 +527,59 @@
 	    data: function data() {
 	        return {
 	            imgs: ["http://ac-bvpkzuy5.clouddn.com/f79fe858be612caa.jpg", "http://ac-bvpkzuy5.clouddn.com/d56569b9e44c0e12.jpg", "http://ac-bvpkzuy5.clouddn.com/f79fe858be612caa.jpg"],
-	            selectedIndex: 0
+	            isLast: false,
+	            selectedIndex: 1
 	        };
 	    },
 	
 	    computed: {
+	        initClass: function initClass() {
+	            if (this.selectedIndex > this.imgList.length - 1) {
+	                this.selectedIndex = 1;
+	                return "no-animation";
+	            }
+	        },
 	        translate: function translate() {
 	            var left = (0 - this.selectedIndex) * 100 + "%";
 	            return {
 	                transform: 'translate(' + left + ')'
 	            };
-	        }
+	        },
+	        imgList: function imgList() {
+	            var length = this.imgs.length,
+	                imgList = this.imgs.slice(0, length);
+	            if (length > 0) {
+	                var firstImg = imgList[0],
+	                    lastImg = imgList[length - 1];
+	                imgList.unshift(firstImg);
+	                imgList.push(lastImg);
+	            }
+	            return imgList;
+	        },
+	        styleObj: function styleObj() {}
 	
 	    },
 	    ready: function ready() {
-	        var self = this;
-	        setInterval(function () {
-	            self.selectedIndex++;
-	            if (self.selectedIndex > self.imgs.length - 1) {
-	                self.selectedIndex = 0;
-	            }
-	        }, 3000);
+	        var self = this,
+	            splitTimer = 3000;
+	
+	        function slider(splitTime) {
+	
+	            setTimeout(function () {
+	                splitTime = splitTimer;
+	                self.selectedIndex++;
+	                if (self.selectedIndex == self.imgList.length) {
+	                    splitTime = 0;
+	                }
+	                slider(splitTime);
+	            }, splitTime);
+	        }
+	        slider(splitTimer);
 	    },
 	    attached: function attached() {},
 	
 	    methods: {
+	
 	        changImg: function changImg(index) {
 	            this.selectedIndex = index;
 	        }
@@ -563,7 +591,7 @@
 /* 13 */
 /***/ function(module, exports) {
 
-	module.exports = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<div class=\"img-slider\">\n    <ul :style=\"translate\">\n        <li class=\"img\" v-for=\"img in imgs\" track-by=\"$index\">\n            <img :src=\"img\" alt=\"img\" />\n        </li>\n    </ul>\n    <div class=\"controller-panel\">\n        <span v-for=\"img in imgs\" v-on:click=\"changImg($index)\" track-by=\"$index\">{{$index+1}}</span>\n    </div>\n</div>\n\n";
+	module.exports = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<div class=\"img-slider\">\n    <ul :style=\"translate\" class=\"{{initClass}}\">\n        <li class=\"img\" v-for=\"img in imgList\" track-by=\"$index\">\n            <img :src=\"img\" alt=\"img\" />\n        </li>\n    </ul>\n    <div class=\"controller-panel\">\n        <span v-for=\"img in imgs\" v-on:click=\"changImg($index)\" track-by=\"$index\">{{$index+1}}</span>\n    </div>\n</div>\n\n";
 
 /***/ }
 /******/ ]);

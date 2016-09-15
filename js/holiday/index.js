@@ -18,6 +18,7 @@ var initDateEnd = {
 var vm = new Vue({
   el: "#wh-container",
   data: {
+    remainCount: 0,
     showAdd: false,
     datePickerDataFrom: initDateFrom,
     datePickerDataEnd: initDateEnd,
@@ -114,7 +115,11 @@ var vm = new Vue({
 
       } else {
         this.currentType = item.key;
-        queryDate(this);
+        if (item.key == 'remainholiday') {
+          getRemainCount(this);
+        } else {
+          queryDate(this);
+        }
       }
       this.$broadcast('showNormal', false);
     },
@@ -154,6 +159,17 @@ function deleteDates(dateList, self) {
       vm.query();
     })
   }
+}
+
+function getRemainCount(self) {
+  $.ajax({
+    type: 'get',
+    url: '/holiday/remain',
+  }).then(function(result) {
+    if (result.status == 'success') {
+      self.remainCount = result.workDayCount - result.holidayCount;
+    }
+  }, function() {})
 }
 
 function queryDate(self) {

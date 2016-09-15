@@ -54,6 +54,7 @@ li {
   background: url(../../imgs/bg.jpg) 50% no-repeat; }
   .wh-holiday-container .add-panel {
     position: fixed;
+    z-index: 3;
     top: 0;
     right: 0;
     display: table;
@@ -63,6 +64,8 @@ li {
     .wh-holiday-container .add-panel .add-content {
       display: table-cell;
       vertical-align: middle; }
+      .wh-holiday-container .add-panel .add-content .from {
+        white-space: normal; }
       .wh-holiday-container .add-panel .add-content > div {
         position: relative;
         width: 70%;

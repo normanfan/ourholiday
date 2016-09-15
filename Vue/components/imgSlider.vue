@@ -10,6 +10,9 @@
         width: 100%;
         height: 100%;
         white-space: nowrap;
+        &.no-animation {
+            transition: none;
+        }
         li {
             height: 100%;
             width: 100%;
@@ -34,8 +37,8 @@
 <template lang="html">
 
 <div class="img-slider">
-    <ul :style="translate">
-        <li class="img" v-for="img in imgs" track-by="$index">
+    <ul :style="translate" class="{{initClass}}">
+        <li class="img" v-for="img in imgList" track-by="$index">
             <img :src="img" alt="img" />
         </li>
     </ul>
@@ -55,29 +58,59 @@ export default {
                     "http://ac-bvpkzuy5.clouddn.com/d56569b9e44c0e12.jpg",
                     "http://ac-bvpkzuy5.clouddn.com/f79fe858be612caa.jpg"
                 ],
-                selectedIndex: 0
+                isLast: false,
+                selectedIndex: 1
             };
         },
         computed: {
+            initClass: function() {
+                if (this.selectedIndex > this.imgList.length - 1) {
+                    this.selectedIndex = 1;
+                    return "no-animation";
+                }
+            },
             translate: function() {
                 var left = (0 - this.selectedIndex) * 100 + "%";
                 return {
                     transform: 'translate(' + left + ')'
                 }
+            },
+            imgList: function() {
+                let length = this.imgs.length,
+                    imgList = this.imgs.slice(0, length);
+                if (length > 0) {
+                    let firstImg = imgList[0],
+                        lastImg = imgList[length - 1];
+                    imgList.unshift(firstImg);
+                    imgList.push(lastImg);
+                }
+                return imgList;
+            },
+            styleObj: function() {
+
             }
 
         },
         ready() {
-            var self = this;
-            setInterval(function() {
-                self.selectedIndex++;
-                if (self.selectedIndex > self.imgs.length - 1) {
-                    self.selectedIndex = 0;
-                }
-            }, 3000)
+            let self = this,
+                splitTimer = 3000;
+
+            function slider(splitTime) {
+
+                setTimeout(function() {
+                    splitTime = splitTimer;
+                    self.selectedIndex++;
+                    if (self.selectedIndex==self.imgList.length) {
+                        splitTime = 0;
+                    }
+                    slider(splitTime);
+                }, splitTime);
+            }
+            slider(splitTimer)
         },
         attached() {},
         methods: {
+
             changImg: function(index) {
                 this.selectedIndex = index;
             }
